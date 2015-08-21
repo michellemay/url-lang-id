@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Michel Lemay
+ * Copyright 2011 Michel Lemay
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package com.michellemay;
-
-import java.util.Optional;
-import java.util.Locale;
+package com.michellemay.profiles;
 
 /**
- * Guesses the language of an URL.
- *
- * <p>See website for details.</p>
- *
  * @author Michel Lemay
  */
-public interface URLLanguageDetector {
-
-    /**
-     * @param url Url to detect language from.
-     * @return The language if confident, absent if unknown or not confident enough.
-     */
-    Optional<Locale> detect(String url);
-    
+public interface Profile {
 }
