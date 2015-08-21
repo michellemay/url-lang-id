@@ -16,6 +16,6 @@ public interface URLLanguageDetector {
      * @param url Url to detect language from.
      * @return The language if confident, absent if unknown or not confident enough.
      */
-    Optional<Locale> detect(CharSequence url);
+    Optional<Locale> detect(String url);
     
 }

@@ -10,6 +10,19 @@ import junit.framework.TestSuite;
 public class URLLanguageDetectorTest 
     extends TestCase
 {
+    // Should detect english:
+    //  http://en.test.com/
+    //  http://www.test.com/en/index.html
+    //  http://www.test.com/path/index.html?lang=en
+    //  http://fr:fr@www.test.com:8080/path/index.html?lang=en
+
+    // Support %nn values
+
+    // By default: must not detect language:
+    //  http://en.com/
+    //  http://www.test.com/path/en/index.html
+
+
     /**
      * Create the test case
      *

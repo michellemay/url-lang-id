@@ -1,0 +1,47 @@
+{
+  "mappings":[
+    {
+      "name":"all",
+      "extends":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS"]
+    }
+  ],
+
+  "matchers":[
+    {
+      "name":"hostname",
+      "urlpart":"hostname",
+      "patterns":["(?<lang>[^\\.]+\\..*"]
+    },
+    {
+      "name":"path",
+      "urlpart":"path",
+      "patterns":["/(?<lang>[^/]+)/.*"]
+    },
+    {
+      "name":"querystring",
+      "urlpart":"querystring",
+      "patterns":["lang(uage)?=(?<lang>.*)"]
+    }
+  ],
+
+  "profiles": [
+    {
+      "name":"default",
+      "domains":[".*"],
+      "mapping":"ISO-639-ALPHA-2",
+      "matchers":[
+        {
+          "matcher":"hostname"
+        },
+        {
+          "matcher":"path"
+        },
+        {
+          "matcher":"querystring",
+          "mapping":"all"
+        }
+      ]
+    }
+  ]
+}
+

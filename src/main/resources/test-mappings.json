@@ -1,0 +1,44 @@
+{
+  "mappings":[
+    {
+      "name":"mytest",
+      "extends":["ISO-639-ALPHA-2", "ISO-639-ALPHA-3"],
+      "add":[{"en":"english,anglais"},{"es":"spanish,espagnol"}],
+      "override":[{"fr":"french,français"}],
+      "filter":["en","fr","de","es","it"],
+      "casesensitive":"true"
+    }
+  ],
+
+  "matchers":[
+    {
+      "name":"mypathregex",
+      "urlpart":"path",
+      "patterns":["/docs/(?<lang>[^/]+)/index\\.html"],
+      "mapping":"mytest"
+    },
+    {
+      "name":"myquerystring",
+      "urlpart":"querystring",
+      "patterns":["(cv_)?lang(uage)?=(?<lang>.*)","loc=(?<lang>.*)"],
+      "casesensitive":"true"
+    }
+  ],
+
+  "profiles": [
+    {
+      "name":"custom",
+      "domains":["mystuff.stuff","my.*\\.stuff"],
+      "matchers":[
+        {
+          "matcher":"mypathregex"
+        },
+        {
+          "matcher":"myquerystring",
+          "mapping":"mytest"
+        }
+      ]
+    }
+  ]
+}
+
