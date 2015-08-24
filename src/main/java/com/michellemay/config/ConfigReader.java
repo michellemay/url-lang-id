@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Michel Lemay
  */
 public class ConfigReader {
-    private static final String DEFAULT_CONFIG = "default-profiles.json";
+    public static final String DEFAULT_CONFIG = "default-profiles.json";
 
     /**
      * Read from an InputStream in UTF-8.

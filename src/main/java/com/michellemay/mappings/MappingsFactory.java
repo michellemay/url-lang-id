@@ -16,8 +16,12 @@
 
 package com.michellemay.mappings;
 
+import java.util.List;
+
 /**
  * @author Michel Lemay
  */
 public class MappingsFactory {
+    public MappingsFactory(List<MappingConfig> mappings) {
+    }
 }

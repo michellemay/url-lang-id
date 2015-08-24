@@ -16,8 +16,15 @@
 
 package com.michellemay.profiles;
 
+import com.michellemay.mappings.MappingsFactory;
+import com.michellemay.matchers.MatchersFactory;
+
+import java.util.List;
+
 /**
  * @author Michel Lemay
  */
 public class ProfilesFactory {
+    public ProfilesFactory(List<ProfileConfig> profiles, MappingsFactory mappingsFactory, MatchersFactory matchersFactory) {
+    }
 }

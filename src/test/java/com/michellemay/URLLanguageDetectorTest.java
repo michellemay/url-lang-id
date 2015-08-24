@@ -16,15 +16,18 @@
 
 package com.michellemay;
 
+import com.michellemay.config.ConfigReader;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.io.IOException;
+
 /**
  * Unit test for simple App.
  */
-public class URLLanguageDetectorTest
-        extends TestCase {
+public class URLLanguageDetectorTest extends TestCase {
     // Should detect english:
     //  http://en.test.com/
     //  http://www.test.com/en/index.html
@@ -37,6 +40,12 @@ public class URLLanguageDetectorTest
     //  http://en.com/
     //  http://www.test.com/path/en/index.html
 
+
+    private URLLanguageDetector makeNewDetector() throws IOException {
+        URLLanguageDetectorBuilder builder = URLLanguageDetectorBuilder.create(ConfigReader.readBuiltIn());
+        URLLanguageDetector detector = builder.create();
+        return detector;
+    }
 
     /**
      * Create the test case
@@ -54,10 +63,8 @@ public class URLLanguageDetectorTest
         return new TestSuite(URLLanguageDetectorTest.class);
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp() {
-        assertTrue(true);
+    public void testEmptyURL() throws Exception {
+        URLLanguageDetector detector = makeNewDetector();
+        assertFalse(detector.detect("").isPresent());
     }
 }

@@ -16,31 +16,31 @@
 
 package com.michellemay;
 
+import com.michellemay.config.Config;
 import com.michellemay.mappings.MappingsFactory;
 import com.michellemay.matchers.MatchersFactory;
 import com.michellemay.profiles.ProfilesFactory;
 
-import java.util.Locale;
-import java.util.Optional;
-
 /**
  * @author Michel Lemay
  */
-public class URLLanguageDetectorImpl implements URLLanguageDetector {
+public class URLLanguageDetectorBuilder {
     private MappingsFactory mappingsFactory;
     private MatchersFactory matchersFactory;
     private ProfilesFactory profilesFactory;
 
-    URLLanguageDetectorImpl(MappingsFactory mappingsFactory, MatchersFactory matchersFactory, ProfilesFactory profilesFactory) {
-        this.mappingsFactory = mappingsFactory;
-        this.matchersFactory = matchersFactory;
-        this.profilesFactory = profilesFactory;
+    public static URLLanguageDetectorBuilder create(Config config) {
+        return new URLLanguageDetectorBuilder(config);
     }
 
-    @Override
-    public Optional<Locale> detect(String url) {
-        Optional<Locale> t = Optional.empty();
+    private URLLanguageDetectorBuilder(Config config)
+    {
+        this.mappingsFactory = new MappingsFactory(config.mappings);
+        this.matchersFactory = new MatchersFactory(config.matchers, this.mappingsFactory);
+        this.profilesFactory = new ProfilesFactory(config.profiles, this.mappingsFactory, this.matchersFactory);
+    }
 
-        return t;
+    public URLLanguageDetector create() {
+        return new URLLanguageDetectorImpl(mappingsFactory, matchersFactory, profilesFactory);
     }
 }

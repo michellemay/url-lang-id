@@ -22,8 +22,6 @@ import java.util.Locale;
 /**
  * Guesses the language of an URL.
  *
- * <p>See website for details.</p>
- *
  * @author Michel Lemay
  */
 public interface URLLanguageDetector {
