@@ -20,8 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 
@@ -54,8 +53,8 @@ public class MappingConfigTest extends TestCase {
                 "      \"casesensitive\":\"true\"\n" +
                 "    }";
 
-        ObjectMapper mapper = JsonFactory.create();
-        MappingConfig mapping = mapper.fromJson(json, MappingConfig.class);
+        ObjectMapper mapper = new ObjectMapper();
+        MappingConfig mapping = mapper.readValue(json, MappingConfig.class);
 
         assertEquals(mapping.name, "mytest");
         assertTrue(mapping.extend.size() == 2 && mapping.extend.containsAll(Arrays.asList("ISO-639-ALPHA-2,ISO-639-ALPHA-3".split(","))));
@@ -66,19 +65,6 @@ public class MappingConfigTest extends TestCase {
         assertTrue(mapping.override.containsKey("fr") && mapping.override.get("fr").equals("french,français"));
         assertTrue(mapping.filter.size() == 5 && mapping.filter.containsAll(Arrays.asList("en,fr,de,es,it".split(","))));
         assertTrue(mapping.casesensitive);
-    }
-
-    public void testRead2() throws Exception {
-        String json = "{\n" +
-                "      \"name\":\"mytest2\",\n" +
-                "      \"extend\":[\"ISO-639-ALPHA-2\", \"ISO-639-ALPHA-3\"],\n" +
-                "    }";
-
-        ObjectMapper mapper = JsonFactory.create();
-        MappingConfig mapping = mapper.fromJson(json, MappingConfig.class);
-
-        assertEquals(mapping.name, "mytest2");
-        assertTrue(mapping.extend.size() == 2 && mapping.extend.containsAll(Arrays.asList("ISO-639-ALPHA-2,ISO-639-ALPHA-3".split(","))));
     }
 
     public static Test suite() {

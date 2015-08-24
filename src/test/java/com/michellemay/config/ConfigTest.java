@@ -20,8 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Config Tester.
@@ -91,8 +90,8 @@ public class ConfigTest extends TestCase {
                 "}\n" +
                 "\n";
 
-        ObjectMapper mapper = JsonFactory.create();
-        Config config = mapper.fromJson(json, Config.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Config config = mapper.readValue(json, Config.class);
 
         assertEquals(config.mappings.size(), 1);
         assertEquals(config.matchers.size(), 3);

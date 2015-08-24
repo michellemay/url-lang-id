@@ -20,8 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 
@@ -60,8 +59,8 @@ public class ProfileConfigTest extends TestCase {
                 "      ]\n" +
                 "    }";
 
-        ObjectMapper mapper = JsonFactory.create();
-        ProfileConfig profile = mapper.fromJson(json, ProfileConfig.class);
+        ObjectMapper mapper = new ObjectMapper();
+        ProfileConfig profile = mapper.readValue(json, ProfileConfig.class);
 
         assertEquals(profile.name, "profile1");
         String[] domains = "mystuff.stuff,my.*\\.stuff".split(",");

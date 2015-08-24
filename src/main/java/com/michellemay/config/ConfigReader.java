@@ -19,8 +19,7 @@ package com.michellemay.config;
 import java.io.*;
 import java.nio.charset.Charset;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Michel Lemay
@@ -43,7 +42,7 @@ public class ConfigReader {
             }
         }
 
-        return JsonFactory.create().fromJson(buffer.toString(), Config.class);
+        return (new ObjectMapper()).readValue(buffer.toString(), Config.class);
     }
 
     /**

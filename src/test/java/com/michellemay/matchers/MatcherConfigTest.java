@@ -20,8 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 
@@ -52,29 +51,13 @@ public class MatcherConfigTest extends TestCase {
                 "      \"casesensitive\":\"true\"\n" +
                 "    }";
 
-        ObjectMapper mapper = JsonFactory.create();
-        MatcherConfig matcher = mapper.fromJson(json, MatcherConfig.class);
+        ObjectMapper mapper = new ObjectMapper();
+        MatcherConfig matcher = mapper.readValue(json, MatcherConfig.class);
 
         assertEquals(matcher.name, "myquerystring");
         assertEquals(matcher.urlpart, Matcher.UrlPart.querystring);
         assertTrue(matcher.patterns.size() == 2 && matcher.patterns.containsAll(Arrays.asList("(cv_)?lang(uage)?=(?<lang>.*),loc=(?<lang>.*)".split(","))));
         assertTrue(matcher.casesensitive);
-    }
-
-    public void testReadWithMissingValues() throws Exception {
-        String json = "{\n" +
-                "      \"name\":\"myquerystring\",\n" +
-                "      \"urlpart\":\"path\",\n" +
-                "      \"patterns\":[],\n" +
-                "    }";
-
-        ObjectMapper mapper = JsonFactory.create();
-        MatcherConfig matcher = mapper.fromJson(json, MatcherConfig.class);
-
-        assertEquals(matcher.name, "myquerystring");
-        assertEquals(matcher.urlpart, Matcher.UrlPart.path);
-        assertTrue(matcher.patterns.size() == 0);
-        assertTrue(!matcher.casesensitive);
     }
 
     public static Test suite() {
