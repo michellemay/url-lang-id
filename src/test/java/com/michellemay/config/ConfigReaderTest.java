@@ -39,28 +39,18 @@ public class ConfigReaderTest extends TestCase {
     }
 
     /**
-     * Method: read(InputStream inputStream)
-     */
-    public void testReadInputStream() throws Exception {
-//TODO: Test goes here...
-    }
-
-    /**
-     * Method: read(ClassLoader classLoader, String profileName)
-     */
-    public void testReadForClassLoaderProfileName() throws Exception {
-//TODO: Test goes here...
-    }
-
-    /**
      * Method: readBuiltIn()
      */
     public void testReadBuiltIn() throws Exception {
-        String config1 = ConfigReader.readBuiltIn();
-        assertTrue(config1.contains("\"profiles\":"));
+        Config config1 = ConfigReader.readBuiltIn();
+        assertEquals(config1.mappings.size(), 1);
+        assertEquals(config1.matchers.size(), 3);
+        assertEquals(config1.profiles.size(), 1);
 
-        String config2 = ConfigReader.readBuiltIn(TEST_CONFIG);
-        assertTrue(config2.contains("\"profiles\":"));
+        Config config2 = ConfigReader.readBuiltIn(TEST_CONFIG);
+        assertEquals(config2.mappings.size(), 2);
+        assertEquals(config2.matchers.size(), 2);
+        assertEquals(config2.profiles.size(), 1);
     }
 
 

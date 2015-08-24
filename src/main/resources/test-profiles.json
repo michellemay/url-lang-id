@@ -2,11 +2,15 @@
   "mappings":[
     {
       "name":"mytest",
-      "extends":["ISO-639-ALPHA-2", "ISO-639-ALPHA-3"],
-      "add":[{"en":"english,anglais"},{"es":"spanish,espagnol"}],
-      "override":[{"fr":"french,français"}],
+      "extend":["ISO-639-ALPHA-2", "ISO-639-ALPHA-3"],
+      "add":{"en":"english,anglais","es":"spanish,espagnol"},
+      "override":{"fr":"french,français"},
       "filter":["en","fr","de","es","it"],
       "casesensitive":"true"
+    },
+    {
+      "name": "mytest2",
+      "extend":["ISO-639-ALPHA-2"]
     }
   ],
 
@@ -29,13 +33,14 @@
     {
       "name":"custom",
       "domains":["mystuff.stuff","my.*\\.stuff"],
+      "mapping":"mytest",
       "matchers":[
         {
           "matcher":"mypathregex"
         },
         {
           "matcher":"myquerystring",
-          "mapping":"mytest"
+          "mapping":"mytest2"
         }
       ]
     }

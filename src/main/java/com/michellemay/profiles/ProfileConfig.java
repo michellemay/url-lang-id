@@ -14,11 +14,24 @@
  * limitations under the License.
  */
 
-package com.michellemay.matchers;
+package com.michellemay.profiles;
+
+import com.michellemay.matchers.Matcher;
+
+import java.util.List;
 
 /**
  * @author Michel Lemay
  */
-public interface Matcher {
-    public enum UrlPart { hostname, path, querystring };
+
+public class ProfileConfig {
+    public static class MatcherRef {
+        public String matcher;
+        public String mapping;
+    }
+
+    public String name;
+    public List<String> domains;
+    public String mapping;
+    public List<MatcherRef> matchers;
 }

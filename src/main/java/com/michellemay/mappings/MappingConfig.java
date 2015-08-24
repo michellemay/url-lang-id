@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package com.michellemay.matchers;
+package com.michellemay.mappings;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Michel Lemay
  */
-public interface Matcher {
-    public enum UrlPart { hostname, path, querystring };
+public class MappingConfig {
+    public String name;
+    public List<String> extend;
+    public Map<String, String> add;
+    public Map<String, String> override;
+    public List<String> filter;
+    public Boolean casesensitive = false;
 }

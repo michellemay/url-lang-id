@@ -16,9 +16,15 @@
 
 package com.michellemay.matchers;
 
+import java.util.List;
+
 /**
  * @author Michel Lemay
  */
-public interface Matcher {
-    public enum UrlPart { hostname, path, querystring };
+public class MatcherConfig {
+    public String name;
+    public Matcher.UrlPart urlpart;
+    public List<String> patterns;
+    public String mapping;
+    public Boolean casesensitive = false;
 }

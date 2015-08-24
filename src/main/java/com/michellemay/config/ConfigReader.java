@@ -18,9 +18,9 @@ package com.michellemay.config;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import org.boon.json.JsonFactory;
+import org.boon.json.ObjectMapper;
 
 /**
  * @author Michel Lemay
@@ -31,7 +31,7 @@ public class ConfigReader {
     /**
      * Read from an InputStream in UTF-8.
      */
-    public static String read(InputStream inputStream) throws IOException {
+    public static Config read(InputStream inputStream) throws IOException {
         StringBuilder buffer = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("utf-8")))) {
             String line;
@@ -43,7 +43,7 @@ public class ConfigReader {
             }
         }
 
-        return buffer.toString();
+        return JsonFactory.create().fromJson(buffer.toString(), Config.class);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ConfigReader {
      * @param classLoader the ClassLoader to load the profiles from. Use {@code MyClass.class.getClassLoader()}
      * @param configName profile path inside the classpath.
      */
-    public static String read(ClassLoader classLoader, String configName) throws IOException {
+    public static Config read(ClassLoader classLoader, String configName) throws IOException {
         try (InputStream in = classLoader.getResourceAsStream(configName)) {
             if (in == null) {
                 throw new IOException("No profile file available named at " + configName + "!");
@@ -66,7 +66,7 @@ public class ConfigReader {
     /**
      * Load builtin profiles configuration from the classpath.
      */
-    public static String readBuiltIn() throws IOException {
+    public static Config readBuiltIn() throws IOException {
         return readBuiltIn(DEFAULT_CONFIG);
     }
 
@@ -75,7 +75,7 @@ public class ConfigReader {
      *
      * @param configName profile path inside the classpath.
      */
-    public static String readBuiltIn(String configName) throws IOException {
+    public static Config readBuiltIn(String configName) throws IOException {
         String path = configName;
         try (InputStream in = ConfigReader.class.getClassLoader().getResourceAsStream(path)) {
             if (in == null) {
