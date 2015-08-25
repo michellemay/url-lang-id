@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.michellemay;
+package com.michellemay.mappings;
 
-import com.michellemay.mappings.MappingsFactory;
-import com.michellemay.matchers.MatchersFactory;
-import com.michellemay.profiles.ProfilesFactory;
 
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * @author Michel Lemay
  */
-public class URLLanguageDetectorImpl implements URLLanguageDetector {
-    private ProfilesFactory profilesFactory;
+public class ISO639Alpha2Mapping extends Mapping {
+    static public String NAME = "ISO-639-ALPHA-2";
 
-    URLLanguageDetectorImpl(ProfilesFactory profilesFactory) {
-        this.profilesFactory = profilesFactory;
-    }
+    public ISO639Alpha2Mapping() {
+        super(NAME);
 
-    @Override
-    public Optional<Locale> detect(String url) {
-        Optional<Locale> t = Optional.empty();
-
-        return t;
+        // Build reverse map
+        HashMap<String, String> map = new HashMap<String, String>();
+        for (Locale loc : Locale.getAvailableLocales()) {
+            String code = loc.getLanguage().toLowerCase();
+            if (code.length() > 0 && !map.containsKey(code)) {
+                map.put(code, code);
+            }
+        }
+        this.withMapping(map).withCaseSensitive(false);
     }
 }

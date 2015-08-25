@@ -16,9 +16,9 @@
 
 package com.michellemay.mappings;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,19 +30,8 @@ import java.util.Arrays;
  * @author Michel Lemay
  * @version 1.0
  */
-public class MappingConfigTest extends TestCase {
-    public MappingConfigTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+public class MappingConfigTest {
+    @Test
     public void testRead() throws Exception {
         String json = "{\n" +
                 "      \"name\":\"mytest\",\n" +
@@ -66,8 +55,4 @@ public class MappingConfigTest extends TestCase {
         assertTrue(mapping.filter.size() == 5 && mapping.filter.containsAll(Arrays.asList("en,fr,de,es,it".split(","))));
         assertTrue(mapping.casesensitive);
     }
-
-    public static Test suite() {
-        return new TestSuite(MappingConfigTest.class);
-    }
-} 
+}

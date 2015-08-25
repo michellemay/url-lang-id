@@ -16,9 +16,8 @@
 
 package com.michellemay.config;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,19 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Michel Lemay
  * @version 1.0
  */
-public class ConfigTest extends TestCase {
-    public ConfigTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+public class ConfigTest {
+    @Test
     public void testRead() throws Exception {
         String json = "{\n" +
                 "  \"mappings\":[\n" +
@@ -97,8 +85,4 @@ public class ConfigTest extends TestCase {
         assertEquals(config.matchers.size(), 3);
         assertEquals(config.profiles.size(), 1);
     }
-
-    public static Test suite() {
-        return new TestSuite(ConfigTest.class);
-    }
-} 
+}

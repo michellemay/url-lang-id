@@ -41,6 +41,6 @@ public class URLLanguageDetectorBuilder {
     }
 
     public URLLanguageDetector create() {
-        return new URLLanguageDetectorImpl(mappingsFactory, matchersFactory, profilesFactory);
+        return new URLLanguageDetectorImpl(profilesFactory);
     }
 }

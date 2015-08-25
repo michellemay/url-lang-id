@@ -14,29 +14,13 @@
  * limitations under the License.
  */
 
-package com.michellemay;
-
-import com.michellemay.mappings.MappingsFactory;
-import com.michellemay.matchers.MatchersFactory;
-import com.michellemay.profiles.ProfilesFactory;
-
-import java.util.Locale;
-import java.util.Optional;
+package com.michellemay.mappings;
 
 /**
  * @author Michel Lemay
  */
-public class URLLanguageDetectorImpl implements URLLanguageDetector {
-    private ProfilesFactory profilesFactory;
-
-    URLLanguageDetectorImpl(ProfilesFactory profilesFactory) {
-        this.profilesFactory = profilesFactory;
-    }
-
-    @Override
-    public Optional<Locale> detect(String url) {
-        Optional<Locale> t = Optional.empty();
-
-        return t;
+public class CustomMapping extends Mapping {
+    public CustomMapping(String name) {
+        super(name);
     }
 }

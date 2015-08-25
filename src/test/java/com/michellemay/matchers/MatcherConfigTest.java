@@ -16,9 +16,9 @@
 
 package com.michellemay.matchers;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,19 +30,8 @@ import java.util.Arrays;
  * @author Michel Lemay
  * @version 1.0
  */
-public class MatcherConfigTest extends TestCase {
-    public MatcherConfigTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+public class MatcherConfigTest {
+    @Test
     public void testRead() throws Exception {
         String json = "{\n" +
                 "      \"name\":\"myquerystring\",\n" +
@@ -59,8 +48,4 @@ public class MatcherConfigTest extends TestCase {
         assertTrue(matcher.patterns.size() == 2 && matcher.patterns.containsAll(Arrays.asList("(cv_)?lang(uage)?=(?<lang>.*),loc=(?<lang>.*)".split(","))));
         assertTrue(matcher.casesensitive);
     }
-
-    public static Test suite() {
-        return new TestSuite(MatcherConfigTest.class);
-    }
-} 
+}

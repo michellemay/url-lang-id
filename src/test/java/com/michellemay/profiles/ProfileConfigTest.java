@@ -16,9 +16,9 @@
 
 package com.michellemay.profiles;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,19 +30,8 @@ import java.util.Arrays;
  * @author Michel Lemay
  * @version 1.0
  */
-public class ProfileConfigTest extends TestCase {
-    public ProfileConfigTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+public class ProfileConfigTest {
+    @Test
     public void testRead() throws Exception {
         String json = "{\n" +
                 "      \"name\":\"profile1\",\n" +
@@ -71,8 +60,4 @@ public class ProfileConfigTest extends TestCase {
         assertEquals(profile.matchers.get(1).matcher, "myquerystring");
         assertEquals(profile.matchers.get(1).mapping, "mytest2");
     }
-
-    public static Test suite() {
-        return new TestSuite(ProfileConfigTest.class);
-    }
-} 
+}

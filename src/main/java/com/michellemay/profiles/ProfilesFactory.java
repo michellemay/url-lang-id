@@ -25,6 +25,9 @@ import java.util.List;
  * @author Michel Lemay
  */
 public class ProfilesFactory {
+
     public ProfilesFactory(List<ProfileConfig> profiles, MappingsFactory mappingsFactory, MatchersFactory matchersFactory) {
+
     }
+
 }

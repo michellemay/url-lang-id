@@ -22,20 +22,21 @@ import java.util.Locale;
 /**
  * @author Michel Lemay
  */
-public class Mapping {
-    private String name;
-    private HashMap<String, String> mapping = new HashMap<String, String>();
-    private Boolean caseSensitive;
+public class ISO639Alpha3Mapping extends Mapping {
+    static public String NAME = "ISO-639-ALPHA-3";
 
-    public String getName() { return name; }
+    public ISO639Alpha3Mapping() {
+        super(NAME);
 
-    public HashMap<String, String> getMapping() { return mapping; }
-    public Mapping withMapping(HashMap<String, String> mapping) { this.mapping = mapping; return this; }
-
-    public Boolean getCaseSensitive() { return caseSensitive; }
-    public Mapping withCaseSensitive(Boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
-
-    protected Mapping(String name) {
-        this.name = name;
+        // Build reverse map
+        HashMap<String, String> map = new HashMap<String, String>();
+        for (Locale loc : Locale.getAvailableLocales()) {
+            String code = loc.getISO3Language().toLowerCase();
+            String lang = loc.getLanguage().toLowerCase();
+            if (code.length() > 0 && !map.containsKey(code)) {
+                map.put(code, lang);
+            }
+        }
+        this.withMapping(map).withCaseSensitive(false);
     }
 }

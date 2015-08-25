@@ -16,31 +16,16 @@
 
 package com.michellemay.config;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for simple App.
  */
-public class ConfigReaderTest extends TestCase {
+public class ConfigReaderTest {
     private static final String TEST_CONFIG = "test-profiles.json";
 
-    public ConfigReaderTest(String name) {
-        super(name);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    /**
-     * Method: readBuiltIn()
-     */
+    @Test
     public void testReadBuiltIn() throws Exception {
         Config config1 = ConfigReader.readBuiltIn();
         assertEquals(config1.mappings.size(), 1);
@@ -51,10 +36,5 @@ public class ConfigReaderTest extends TestCase {
         assertEquals(config2.mappings.size(), 2);
         assertEquals(config2.matchers.size(), 2);
         assertEquals(config2.profiles.size(), 1);
-    }
-
-
-    public static Test suite() {
-        return new TestSuite(ConfigReaderTest.class);
     }
 }

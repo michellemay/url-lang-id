@@ -25,5 +25,6 @@ import java.util.List;
  */
 public class MatchersFactory {
     public MatchersFactory(List<MatcherConfig> matchers, MappingsFactory mappingsFactory) {
+
     }
 }
