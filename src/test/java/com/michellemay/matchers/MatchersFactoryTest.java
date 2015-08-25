@@ -80,7 +80,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+\\\\..*");
+        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+\\\\..*)");
         config.mapping = "dummymapping";
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
@@ -90,7 +90,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+\\\\..*");
+        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
         config.mapping = ISO639Alpha2Mapping.NAME;
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
         assertEquals(f.getMatchers().size(), 1);

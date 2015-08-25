@@ -10,7 +10,7 @@
     {
       "name":"hostname",
       "urlpart":"hostname",
-      "patterns":["(?<lang>[^\\.]+\\..*"]
+      "patterns":["(?<lang>[^\\.]+)\\..*"]
     },
     {
       "name":"path",
