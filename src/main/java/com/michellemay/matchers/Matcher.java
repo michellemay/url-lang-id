@@ -16,9 +16,40 @@
 
 package com.michellemay.matchers;
 
+import com.michellemay.mappings.Mapping;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
+
 /**
  * @author Michel Lemay
  */
-public interface Matcher {
+public class Matcher {
     public enum UrlPart { hostname, path, querystring };
+
+    private String name;
+    private Matcher.UrlPart urlpart;
+    private List<Pattern> patterns;
+    private Optional<Mapping> mapping;
+    private Boolean caseSensitive;
+
+    public String getName() { return name; }
+
+    public UrlPart getUrlPart() { return urlpart; }
+
+    public List<Pattern> getPatterns() { return patterns; }
+    public Matcher withPatterns(List<Pattern> patterns) { this.patterns = patterns; return this; }
+
+    public Optional<Mapping> getMapping() { return mapping; }
+    public Matcher withMapping(Optional<Mapping> mapping) { this.mapping = mapping; return this; }
+
+    public Boolean getCaseSensitive() { return caseSensitive; }
+    public Matcher withCaseSensitive(Boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
+
+    protected Matcher(String name, UrlPart urlpart) {
+        this.name = name;
+        this.urlpart = urlpart;
+    }
+
 }

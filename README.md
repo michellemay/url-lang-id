@@ -23,7 +23,7 @@ Detect common language patterns in URLs.
 Mappings attributes:
 
 - "name": Mapping name.
-- "extends": List of base mappings to inherit from.
+- "extend": List of base mappings to inherit from.
 - "add": Adds key-value pairs to the mappings. Values are comma separated list of names.
 - "override" Replace base mappings with new ones.
 - "filter": Filter base mappings.
@@ -33,7 +33,7 @@ Default mappings built from Java Locale:
 
 - ISO-639-ALPHA-2: 2 letters language codes (ex: en, fr).
 - ISO-639-ALPHA-3: 3 letters language codes (ex: eng, fra).
-- LANGUAGE-TAGS: Common language tags with country codes (ex: en_US, es-PT). Also matches underscores and dashes.
+- LANGUAGE_TAGS: Common language tags with country codes (ex: en_US, es-PT). Also matches underscores and dashes.
 
 ### Matchers
 

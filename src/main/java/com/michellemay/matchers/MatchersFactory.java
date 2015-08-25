@@ -16,15 +16,73 @@
 
 package com.michellemay.matchers;
 
+import com.google.common.collect.Lists;
+import com.michellemay.mappings.Mapping;
 import com.michellemay.mappings.MappingsFactory;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Michel Lemay
  */
 public class MatchersFactory {
-    public MatchersFactory(List<MatcherConfig> matchers, MappingsFactory mappingsFactory) {
+    private MappingsFactory mappingsFactory;
+    private HashMap<String, Matcher> matchers;
 
+    public Map<String, Matcher> getMatchers() { return matchers; }
+
+    public MatchersFactory(List<MatcherConfig> matchersConfig, MappingsFactory mappingsFactory) {
+        this.mappingsFactory = mappingsFactory;
+        this.matchers = new HashMap<String, Matcher>();
+
+        for (MatcherConfig matcherConfig : matchersConfig) {
+            addMatcher(createMacher(matcherConfig));
+        }
+    }
+
+    private void addMatcher(Matcher matcher) {
+        if (matchers.containsKey(matcher.getName())) {
+            throw new IllegalStateException("A matcher name '" + matcher.getName() + "' already exists!");
+        }
+        matchers.put(matcher.getName(), matcher);
+    }
+
+    private Matcher createMacher(MatcherConfig matcherConfig) {
+        if (StringUtils.isBlank(matcherConfig.name)) {
+            throw new IllegalArgumentException("Blank matcher name!");
+        }
+
+        if (matcherConfig.urlpart == null) {
+            throw new IllegalArgumentException("Matcher must apply to an urlpart!");
+        }
+
+        Optional<Mapping> mapping = Optional.empty();
+        if (matcherConfig.mapping != null) {
+            if (StringUtils.isBlank(matcherConfig.mapping) || !mappingsFactory.getMappings().containsKey(matcherConfig.mapping)) {
+                throw new IllegalStateException("Mapping '" + matcherConfig.mapping + "' does not exists!");
+            }
+            mapping = Optional.of(mappingsFactory.getMappings().get(matcherConfig.mapping));
+        }
+
+        if (matcherConfig.patterns == null || matcherConfig.patterns.isEmpty()) {
+            throw new IllegalArgumentException("Matcher must have non-empty patterns list!");
+        }
+
+        int flags = matcherConfig.casesensitive ? 0 : Pattern.CASE_INSENSITIVE;
+        ArrayList<Pattern> patterns = Lists.newArrayList();
+        matcherConfig.patterns.forEach((patternStr) -> {
+            // Must contain a capturing group named 'lang'. ex: (?<lang>\w+)
+            if (!patternStr.contains("(?<lang>")) {
+                throw new IllegalArgumentException("Matcher pattern '" + patternStr + "' must have a capturing group named 'lang'!");
+            }
+            patterns.add(Pattern.compile(patternStr, flags));
+        });
+
+        return new Matcher(matcherConfig.name, matcherConfig.urlpart)
+                .withPatterns(patterns)
+                .withCaseSensitive(matcherConfig.casesensitive)
+                .withMapping(mapping);
     }
 }

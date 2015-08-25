@@ -17,14 +17,13 @@
 package com.michellemay.mappings;
 
 import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
 
+import org.junit.Test;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -36,7 +35,7 @@ import java.util.Collections;
 public class MappingsFactoryTest {
     @Test
     public void testDefaultMappings() throws Exception {
-        MappingsFactory f = new MappingsFactory(new ArrayList<MappingConfig>());
+        MappingsFactory f = new MappingsFactory(Collections.emptyList());
         assertEquals(f.getMappings().size(), 3);
         assertTrue(f.getMappings().containsKey("ISO-639-ALPHA-2"));
         assertTrue(f.getMappings().containsKey("ISO-639-ALPHA-3"));
@@ -94,7 +93,7 @@ public class MappingsFactoryTest {
     public void testCreateMappingFilterAndOverride() throws Exception {
         MappingConfig config = new MappingConfig();
         config.name = "test";
-        config.extend = asList("ISO-639-ALPHA-3");
+        config.extend = Collections.singletonList("ISO-639-ALPHA-3");
         config.filter = asList("EN", "fr");
         config.override = ImmutableMap.of("fr", "french,francais");
         MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
