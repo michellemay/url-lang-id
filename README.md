@@ -68,7 +68,7 @@ Profiles attributes:
       "mappings":[
         {
           "name":"all",
-          "extends":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS"]
+          "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS"]
         }
       ],
     
@@ -76,7 +76,7 @@ Profiles attributes:
         {
           "name":"hostname",
           "urlpart":"hostname",
-          "patterns":["(?<lang>[^\\.]+\\..*"]
+          "patterns":["(?<lang>[^\\.]+)\\..*"]
         },
         {
           "name":"path",
