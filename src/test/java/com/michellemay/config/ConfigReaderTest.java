@@ -17,6 +17,9 @@
 package com.michellemay.config;
 
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -36,5 +39,10 @@ public class ConfigReaderTest {
         assertEquals(config2.mappings.size(), 2);
         assertEquals(config2.matchers.size(), 2);
         assertEquals(config2.profiles.size(), 1);
+    }
+
+    @Test(expected = IOException.class)
+    public void testInvalidResource() throws Exception {
+        ConfigReader.readBuiltIn("dummyConfig");
     }
 }

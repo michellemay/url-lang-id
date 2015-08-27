@@ -61,11 +61,7 @@ public class MappingsFactory {
         // Inherit all mappings from bases
         if (mappingConfig.extend != null) {
             for (String baseMappingName : mappingConfig.extend) {
-                if (StringUtils.isBlank(baseMappingName)) {
-                    throw new IllegalArgumentException("Blank base mapping name!");
-                }
-                baseMappingName = baseMappingName.trim();
-                if (!mappings.containsKey(baseMappingName)) {
+                if (StringUtils.isBlank(baseMappingName) || !mappings.containsKey(baseMappingName)) {
                     throw new IllegalStateException("Base mapping name '" + baseMappingName + "' does not exists!");
                 }
                 Mapping baseMapping = mappings.get(baseMappingName);

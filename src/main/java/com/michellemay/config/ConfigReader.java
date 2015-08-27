@@ -56,7 +56,7 @@ public class ConfigReader {
     public static Config read(ClassLoader classLoader, String configName) throws IOException {
         try (InputStream in = classLoader.getResourceAsStream(configName)) {
             if (in == null) {
-                throw new IOException("No profile file available named at " + configName + "!");
+                throw new IOException("No config file available named at " + configName + "!");
             }
             return read(in);
         }
@@ -75,12 +75,6 @@ public class ConfigReader {
      * @param configName profile path inside the classpath.
      */
     public static Config readBuiltIn(String configName) throws IOException {
-        String path = configName;
-        try (InputStream in = ConfigReader.class.getClassLoader().getResourceAsStream(path)) {
-            if (in == null) {
-                throw new IOException("No config file available at " + path + "!");
-            }
-            return read(in);
-        }
+        return read(ConfigReader.class.getClassLoader(), configName);
     }
 }

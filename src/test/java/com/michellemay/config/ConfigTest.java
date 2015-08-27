@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Config Tester.
  *
  * @author Michel Lemay
- * @version 1.0
  */
 public class ConfigTest {
     @Test

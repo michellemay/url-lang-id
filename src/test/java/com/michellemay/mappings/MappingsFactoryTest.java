@@ -16,6 +16,7 @@
 
 package com.michellemay.mappings;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import org.junit.Test;
@@ -30,7 +31,6 @@ import java.util.Collections;
  * MappingsFactory Tester.
  *
  * @author Michel Lemay
- * @version 1.0
  */
 public class MappingsFactoryTest {
     @Test
@@ -52,9 +52,11 @@ public class MappingsFactoryTest {
     public void testCreateSimpleMapping() throws Exception {
         // Mapping must have at least a name
         MappingConfig config = new MappingConfig();
-        config.name = " test";
+        config.name = "test";
+        config.casesensitive = true;
         MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
         assertTrue(f.getMappings().containsKey("test"));
+        assertTrue(f.getMappings().get("test").getCaseSensitive());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -108,4 +110,10 @@ public class MappingsFactoryTest {
         assertEquals(mapping.getMapping().get("francais"), "fr");
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testDuplicateMapping() throws Exception {
+        MappingConfig config = new MappingConfig();
+        config.name = "test";
+        MappingsFactory f = new MappingsFactory(ImmutableList.of(config, config));
+    }
 }

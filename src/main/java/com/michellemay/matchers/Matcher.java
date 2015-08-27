@@ -52,4 +52,12 @@ public class Matcher {
         this.urlpart = urlpart;
     }
 
+    // So I've heard Cloneable is broken..
+    public Matcher shallowCopyWithMapping(Optional<Mapping> newMapping) {
+        return new Matcher(this.name, this.urlpart)
+                .withPatterns(this.patterns)
+                .withCaseSensitive(this.caseSensitive)
+                .withMapping(newMapping);
+    }
+
 }

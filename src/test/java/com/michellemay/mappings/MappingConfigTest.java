@@ -28,7 +28,6 @@ import java.util.Arrays;
  * MappingConfig Tester.
  *
  * @author Michel Lemay
- * @version 1.0
  */
 public class MappingConfigTest {
     @Test

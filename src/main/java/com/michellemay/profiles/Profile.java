@@ -16,8 +16,32 @@
 
 package com.michellemay.profiles;
 
+import com.michellemay.mappings.Mapping;
+import com.michellemay.matchers.Matcher;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
+
 /**
  * @author Michel Lemay
  */
-public interface Profile {
+public class Profile {
+    private String name;
+    private List<Pattern> domains;
+    private List<Matcher> matchers;
+
+    public String getName() { return name; }
+
+    public List<Pattern> getDomains() { return domains; }
+    public Profile withDomains(List<Pattern> domains) { this.domains = domains; return this; }
+
+    public List<Matcher> getMatchers() { return matchers; }
+    public Profile withMatchers(ArrayList<Matcher> matchers) { this.matchers = matchers; return this; }
+
+    protected Profile(String name) {
+        this.name = name;
+    }
+
 }

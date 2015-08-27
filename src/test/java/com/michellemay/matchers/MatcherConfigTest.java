@@ -28,7 +28,6 @@ import java.util.Arrays;
  * MatcherConfig Tester.
  *
  * @author Michel Lemay
- * @version 1.0
  */
 public class MatcherConfigTest {
     @Test

@@ -57,8 +57,13 @@ Profiles attributes:
 
 - "name": Profile name
 - "domains": List of domain name matching patterns.
-- "mapping": Default language mappings to use when not specified in Matchers.
+- "mapping": Default language mappings to use when not specified in matchers.
 - "matchers": List of matchers used in order of appearance. Each matcher can use default profile mapping or specify one locally.
+
+Mappings are selected in the following order:
+1) Mappings found in "profiles > matchers > mapping"
+2) Default mapping set in "profiles > mapping"
+3) Default mapping set in "matchers > mapping"
 
 ### Example
 

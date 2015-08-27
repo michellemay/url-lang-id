@@ -23,15 +23,16 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.regex.PatternSyntaxException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
  * MatchersFactory Tester.
  *
  * @author Michel Lemay
- * @version 1.0
  */
 public class MatchersFactoryTest {
     @Test
@@ -60,6 +61,7 @@ public class MatchersFactoryTest {
         // Matcher must have a list of patterns
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
+        config.urlpart = Matcher.UrlPart.hostname;
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
         assertTrue(f.getMatchers().isEmpty());
     }
@@ -71,6 +73,16 @@ public class MatchersFactoryTest {
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
         config.patterns = ImmutableList.of("(?<invalidgroupname>[^\\\\.]+\\\\..*");
+        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+    }
+
+    @Test(expected = PatternSyntaxException.class)
+    public void testInvalidMatcherPatterns3() throws Exception {
+        // Matcher must have a list of patterns with capturing group
+        MatcherConfig config = new MatcherConfig();
+        config.name = "test";
+        config.urlpart = Matcher.UrlPart.hostname;
+        config.patterns = ImmutableList.of("(?<lang>.*]");
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
@@ -95,5 +107,20 @@ public class MatchersFactoryTest {
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
         assertEquals(f.getMatchers().size(), 1);
         assertTrue(f.getMatchers().containsKey("test"));
+
+        Matcher matcher = f.getMatchers().get("test");
+        assertFalse(matcher.getCaseSensitive());
+        assertEquals(matcher.getUrlPart(), Matcher.UrlPart.hostname);
+        assertEquals(matcher.getPatterns().size(), 1);
+        assertEquals(matcher.getPatterns().get(0).toString(), "(?<lang>[^\\\\.]+)\\\\..*");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testDuplicateMatcher() throws Exception {
+        MatcherConfig config = new MatcherConfig();
+        config.name = "test";
+        config.urlpart = Matcher.UrlPart.hostname;
+        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
+        MatchersFactory f = new MatchersFactory(ImmutableList.of(config, config), new MappingsFactory(Collections.emptyList()));
     }
 }

@@ -37,7 +37,7 @@ public class URLLanguageDetectorBuilder {
     {
         this.mappingsFactory = new MappingsFactory(config.mappings);
         this.matchersFactory = new MatchersFactory(config.matchers, this.mappingsFactory);
-        this.profilesFactory = new ProfilesFactory(config.profiles, this.mappingsFactory, this.matchersFactory);
+        this.profilesFactory = new ProfilesFactory(config.profiles, this.matchersFactory, this.mappingsFactory);
     }
 
     public URLLanguageDetector create() {
