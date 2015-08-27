@@ -28,9 +28,11 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.PatternSyntaxException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /** 
@@ -47,13 +49,13 @@ public class ProfilesFactoryTest {
       MatcherConfig matcher1 = new MatcherConfig();
       matcher1.name = "withmapping";
       matcher1.urlpart = Matcher.UrlPart.hostname;
-      matcher1.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
+      matcher1.patterns = ImmutableList.of("(?<lang>[^\\.]+)\\..*");
       matcher1.mapping = ISO639Alpha2Mapping.NAME;
 
       MatcherConfig matcher2 = new MatcherConfig();
       matcher2.name = "nomapping";
       matcher2.urlpart = Matcher.UrlPart.hostname;
-      matcher2.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
+      matcher2.patterns = ImmutableList.of("(?<lang>[^\\.]+)\\..*");
 
       MatchersFactory matchersFactory = new MatchersFactory(ImmutableList.of(matcher1, matcher2), mappingsFactory);
 
@@ -100,7 +102,7 @@ public class ProfilesFactoryTest {
    public void testInvalidMatcherName() throws Exception {
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "dummy";
       config.matchers = ImmutableList.of(matcher);
@@ -111,7 +113,7 @@ public class ProfilesFactoryTest {
    public void testInvalidMatcherMapping() throws Exception {
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       matcher.mapping = "dummy";
@@ -123,7 +125,7 @@ public class ProfilesFactoryTest {
    public void testNoMappingForMatcher() throws Exception {
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "nomapping";
       config.matchers = ImmutableList.of(matcher);
@@ -135,15 +137,15 @@ public class ProfilesFactoryTest {
       // Use max precedence: matcher local mapping
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       config.mapping = LanguageTagsMapping.NAME;
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       matcher.mapping = ISO639Alpha3Mapping.NAME;
       config.matchers = ImmutableList.of(matcher);
       ProfilesFactory f = create(Collections.singletonList(config));
-      assertEquals(f.getProfiles().get("test").getMatchers().get(0).getMapping().get().getName(), ISO639Alpha3Mapping.NAME);
-      assertTrue(!f.getProfiles().get("test").getDomains().isEmpty());
+      assertEquals(f.getProfilesByName().get("test").getMatchers().get(0).getMapping().get().getName(), ISO639Alpha3Mapping.NAME);
+      assertTrue(!f.getProfilesByName().get("test").getDomains().isEmpty());
    }
 
    @Test
@@ -151,13 +153,13 @@ public class ProfilesFactoryTest {
       // Use medium precedence: profile default mapping
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       config.mapping = LanguageTagsMapping.NAME;
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       config.matchers = ImmutableList.of(matcher);
       ProfilesFactory f = create(Collections.singletonList(config));
-      assertEquals(f.getProfiles().get("test").getMatchers().get(0).getMapping().get().getName(), LanguageTagsMapping.NAME);
+      assertEquals(f.getProfilesByName().get("test").getMatchers().get(0).getMapping().get().getName(), LanguageTagsMapping.NAME);
    }
 
    @Test
@@ -165,22 +167,87 @@ public class ProfilesFactoryTest {
       // Use least precedence: matcher default mapping
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       config.matchers = ImmutableList.of(matcher);
       ProfilesFactory f = create(Collections.singletonList(config));
-      assertEquals(f.getProfiles().get("test").getMatchers().get(0).getMapping().get().getName(), ISO639Alpha2Mapping.NAME);
+      assertEquals(f.getProfilesByName().get("test").getMatchers().get(0).getMapping().get().getName(), ISO639Alpha2Mapping.NAME);
    }
 
    @Test(expected = IllegalStateException.class)
    public void testDuplicateProfiles() throws Exception {
       ProfileConfig config = new ProfileConfig();
       config.name = "test";
-      config.domains = ImmutableList.of(".*\\\\.com");
+      config.domains = ImmutableList.of(".*\\.com");
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       config.matchers = ImmutableList.of(matcher);
       ProfilesFactory f = create(ImmutableList.of(config, config));
+   }
+
+   @Test
+   public void testProfileMatchingWithFallback() throws Exception {
+      ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
+      matcher.matcher = "withmapping";
+
+      ProfileConfig stuffProfile = new ProfileConfig();
+      stuffProfile.name = "stuff";
+      stuffProfile.domains = ImmutableList.of("(.*\\.)?stuff\\.com");
+      stuffProfile.matchers = ImmutableList.of(matcher);
+
+      ProfileConfig otherProfile = new ProfileConfig();
+      otherProfile.name = "other";
+      otherProfile.domains = ImmutableList.of(".*\\.other\\.org");
+      otherProfile.matchers = ImmutableList.of(matcher);
+
+      ProfileConfig fallbackProfile = new ProfileConfig();
+      fallbackProfile.name = "fallback";
+      fallbackProfile.domains = ImmutableList.of(".*");
+      fallbackProfile.matchers = ImmutableList.of(matcher);
+
+      ProfilesFactory f = create(ImmutableList.of(stuffProfile, otherProfile, fallbackProfile));
+      assertEquals(f.getProfiles().size(), 3);
+      assertEquals(f.getProfiles().get(0).getName(), "stuff");
+      assertEquals(f.getProfiles().get(1).getName(), "other");
+      assertEquals(f.getProfiles().get(2).getName(), "fallback");
+
+      Optional<Profile> foundProfile = f.findProfileForHost("en.stuff.com");
+      assertTrue(foundProfile.isPresent());
+      assertEquals(foundProfile.get().getName(), "stuff");
+
+      foundProfile = f.findProfileForHost("STUFF.COM");
+      assertTrue(foundProfile.isPresent());
+      assertEquals(foundProfile.get().getName(), "stuff");
+
+      foundProfile = f.findProfileForHost("en.other.org");
+      assertTrue(foundProfile.isPresent());
+      assertEquals(foundProfile.get().getName(), "other");
+
+      foundProfile = f.findProfileForHost("anythingelse");
+      assertTrue(foundProfile.isPresent());
+      assertEquals(foundProfile.get().getName(), "fallback");
+   }
+
+   @Test
+   public void testProfileMatchingWithoutFallback() throws Exception {
+      ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
+      matcher.matcher = "withmapping";
+
+      ProfileConfig stuffProfile = new ProfileConfig();
+      stuffProfile.name = "stuff";
+      stuffProfile.domains = ImmutableList.of("(.*\\.)?stuff\\.com");
+      stuffProfile.matchers = ImmutableList.of(matcher);
+
+      ProfilesFactory f = create(ImmutableList.of(stuffProfile));
+      assertEquals(f.getProfiles().size(), 1);
+      assertEquals(f.getProfiles().get(0).getName(), "stuff");
+
+      Optional<Profile> foundProfile = f.findProfileForHost("en.stuff.com");
+      assertTrue(foundProfile.isPresent());
+      assertEquals(foundProfile.get().getName(), "stuff");
+
+      foundProfile = f.findProfileForHost("anythingelse");
+      assertFalse(foundProfile.isPresent());
    }
 }

@@ -18,9 +18,11 @@ package com.michellemay;
 
 import com.michellemay.mappings.MappingsFactory;
 import com.michellemay.matchers.MatchersFactory;
+import com.michellemay.profiles.Profile;
 import com.michellemay.profiles.ProfilesFactory;
 
-import java.util.Locale;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Optional;
 
 /**
@@ -34,9 +36,25 @@ public class URLLanguageDetectorImpl implements URLLanguageDetector {
     }
 
     @Override
-    public Optional<Locale> detect(String url) {
-        Optional<Locale> t = Optional.empty();
+    public Optional<String> detect(String url) {
+        Optional<String> lang = Optional.empty();
 
-        return t;
+        try {
+            // First, make sure we have a valid url
+            URL parsedURL = new URL(url);
+
+            // Select matching profile
+            Optional<Profile> profile = profilesFactory.findProfileForHost(parsedURL.getHost());
+
+            // Execute matchers
+            if (profile.isPresent()) {
+                lang = profile.get().detect(parsedURL);
+            }
+
+        } catch (MalformedURLException e) {
+            // Malformed url, cannot detect.
+        }
+
+        return lang;
     }
 }

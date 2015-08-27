@@ -16,8 +16,8 @@
 
 package com.michellemay;
 
+import java.net.MalformedURLException;
 import java.util.Optional;
-import java.util.Locale;
 
 /**
  * Guesses the language of an URL.
@@ -30,6 +30,6 @@ public interface URLLanguageDetector {
      * @param url Url to detect language from.
      * @return The language if confident, absent if unknown or not confident enough.
      */
-    Optional<Locale> detect(String url);
+    Optional<String> detect(String url);
     
 }

@@ -72,7 +72,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<invalidgroupname>[^\\\\.]+\\\\..*");
+        config.patterns = ImmutableList.of("(?<invalidgroupname>[^\\.]+\\..*");
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
@@ -92,7 +92,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+\\\\..*)");
+        config.patterns = ImmutableList.of("(?<lang>[^\\.]+\\..*)");
         config.mapping = "dummymapping";
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
@@ -102,7 +102,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
+        config.patterns = ImmutableList.of("(?<lang>[^\\.]+)\\..*");
         config.mapping = ISO639Alpha2Mapping.NAME;
         MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
         assertEquals(f.getMatchers().size(), 1);
@@ -112,7 +112,7 @@ public class MatchersFactoryTest {
         assertFalse(matcher.getCaseSensitive());
         assertEquals(matcher.getUrlPart(), Matcher.UrlPart.hostname);
         assertEquals(matcher.getPatterns().size(), 1);
-        assertEquals(matcher.getPatterns().get(0).toString(), "(?<lang>[^\\\\.]+)\\\\..*");
+        assertEquals(matcher.getPatterns().get(0).toString(), "(?<lang>[^\\.]+)\\..*");
     }
 
     @Test(expected = IllegalStateException.class)
@@ -120,7 +120,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        config.patterns = ImmutableList.of("(?<lang>[^\\\\.]+)\\\\..*");
+        config.patterns = ImmutableList.of("(?<lang>[^\\.]+)\\..*");
         MatchersFactory f = new MatchersFactory(ImmutableList.of(config, config), new MappingsFactory(Collections.emptyList()));
     }
 }

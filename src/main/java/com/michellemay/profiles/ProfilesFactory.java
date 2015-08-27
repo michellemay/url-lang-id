@@ -16,13 +16,11 @@
 
 package com.michellemay.profiles;
 
-import com.google.common.collect.Iterables;
 import com.michellemay.mappings.Mapping;
 import com.michellemay.mappings.MappingsFactory;
 import com.michellemay.matchers.Matcher;
 import com.michellemay.matchers.MatchersFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,14 +36,17 @@ public class ProfilesFactory {
     private MappingsFactory mappingsFactory;
     private MatchersFactory matchersFactory;
 
-    private HashMap<String, Profile> profiles;
+    private HashMap<String, Profile> profilesByName;
+    private List<Profile> profiles;
 
-    public Map<String, Profile> getProfiles() { return profiles; }
+    public Map<String, Profile> getProfilesByName() { return profilesByName; }
+    public List<Profile> getProfiles() { return profiles; }
 
     public ProfilesFactory(List<ProfileConfig> profilesConfig, MatchersFactory matchersFactory, MappingsFactory mappingsFactory) {
         this.mappingsFactory = mappingsFactory;
         this.matchersFactory = matchersFactory;
-        this.profiles = new HashMap<String, Profile>();
+        this.profilesByName = new HashMap<String, Profile>();
+        this.profiles = new ArrayList<Profile>();
 
         if (profilesConfig != null) {
             for (ProfileConfig profileConfig : profilesConfig) {
@@ -55,10 +56,11 @@ public class ProfilesFactory {
     }
 
     private void addProfile(Profile profile) {
-        if (profiles.containsKey(profile.getName())) {
+        if (profilesByName.containsKey(profile.getName())) {
             throw new IllegalStateException("A profile name '" + profile.getName() + "' already exists!");
         }
-        profiles.put(profile.getName(), profile);
+        profilesByName.put(profile.getName(), profile);
+        profiles.add(profile);
     }
 
     private Profile createProfile(ProfileConfig profileConfig) {
@@ -115,4 +117,7 @@ public class ProfilesFactory {
         return new Profile(profileConfig.name).withDomains(domains).withMatchers(matchers);
     }
 
+    public Optional<Profile> findProfileForHost(String host) {
+        return profiles.stream().filter((p) -> p.match(host)).findFirst();
+    }
 }

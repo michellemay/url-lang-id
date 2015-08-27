@@ -19,6 +19,7 @@ package com.michellemay.profiles;
 import com.michellemay.mappings.Mapping;
 import com.michellemay.matchers.Matcher;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +45,11 @@ public class Profile {
         this.name = name;
     }
 
+    public Optional<String> detect(URL url) {
+        return Optional.empty();
+    }
+
+    public boolean match(String host) {
+        return domains.stream().anyMatch((p) -> p.matcher(host).matches());
+    }
 }
