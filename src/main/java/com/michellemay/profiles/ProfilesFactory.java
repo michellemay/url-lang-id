@@ -47,8 +47,10 @@ public class ProfilesFactory {
         this.matchersFactory = matchersFactory;
         this.profiles = new HashMap<String, Profile>();
 
-        for (ProfileConfig profileConfig : profilesConfig) {
-            addProfile(createProfile(profileConfig));
+        if (profilesConfig != null) {
+            for (ProfileConfig profileConfig : profilesConfig) {
+                addProfile(createProfile(profileConfig));
+            }
         }
     }
 

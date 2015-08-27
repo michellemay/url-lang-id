@@ -33,8 +33,11 @@ public class MappingsFactory {
         mappings = new HashMap<String, Mapping>();
 
         addDefaultMappings();
-        for (MappingConfig mappingConfig : mappingsConfig) {
-            addMapping(createMapping(mappingConfig));
+
+        if (mappingsConfig != null) {
+            for (MappingConfig mappingConfig : mappingsConfig) {
+                addMapping(createMapping(mappingConfig));
+            }
         }
     }
 

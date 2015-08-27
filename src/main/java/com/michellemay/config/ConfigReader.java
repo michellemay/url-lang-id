@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class ConfigReader {
     public static final String DEFAULT_CONFIG = "default-profiles.json";
+    public static final String TEST_CONFIG = "test-profiles.json";
 
     /**
      * Read from an InputStream in UTF-8.
@@ -42,7 +43,14 @@ public class ConfigReader {
             }
         }
 
-        return (new ObjectMapper()).readValue(buffer.toString(), Config.class);
+        return read(buffer.toString());
+    }
+
+    /**
+     * Read from a String
+     */
+    public static Config read(String inputConfig) throws IOException {
+        return (new ObjectMapper()).readValue(inputConfig, Config.class);
     }
 
     /**

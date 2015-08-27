@@ -37,8 +37,10 @@ public class MatchersFactory {
         this.mappingsFactory = mappingsFactory;
         this.matchers = new HashMap<String, Matcher>();
 
-        for (MatcherConfig matcherConfig : matchersConfig) {
-            addMatcher(createMacher(matcherConfig));
+        if (matchersConfig != null) {
+            for (MatcherConfig matcherConfig : matchersConfig) {
+                addMatcher(createMacher(matcherConfig));
+            }
         }
     }
 
