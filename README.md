@@ -18,18 +18,31 @@ Detect common language patterns in URLs.
 
 ## Usage
 
-#### Builder
-
-Read built-in configuration from resources:
+Complete sample with built-in config defaults:
 
 ```java
+  // Create builder and detector
   URLLanguageDetectorBuilder builder = URLLanguageDetectorBuilder.create(ConfigReader.readBuiltIn());
+  URLLanguageDetector detector = builder.create();
+  
+  // Extract language from url:
+  Optional<Locale> lang = detector.detect("http://en.site.org/");
 ```
 
-Read configuration from string or InputStream:
+### ConfigReader
+
+Read configuration from InputStream:
 
 ```java
-  URLLanguageDetectorBuilder builder = URLLanguageDetectorBuilder.create(ConfigReader.readBuiltIn());
+  InputStream stream = ...
+  Config config = ConfigReader.read(stream, "utf-8");
+```
+
+Read configuration from String:
+
+```java
+  String jsonConfig = "..."
+  Config config = ConfigReader.read(jsonConfig);
 ```
 
 
