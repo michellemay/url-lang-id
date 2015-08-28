@@ -16,6 +16,23 @@ Detect common language patterns in URLs.
 - Extract complete locale description if possible (language, country, variant).
 - Json or programmatic configuration with default profiles.
 
+## Usage
+
+#### Builder
+
+Read built-in configuration from resources:
+
+```java
+  URLLanguageDetectorBuilder builder = URLLanguageDetectorBuilder.create(ConfigReader.readBuiltIn());
+```
+
+Read configuration from string or InputStream:
+
+```java
+  URLLanguageDetectorBuilder builder = URLLanguageDetectorBuilder.create(ConfigReader.readBuiltIn());
+```
+
+
 ## JSON Configuration
 
 #### Mappings

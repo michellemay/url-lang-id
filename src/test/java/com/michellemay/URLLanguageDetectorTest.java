@@ -84,7 +84,11 @@ public class URLLanguageDetectorTest {
 
             // Different querystring params (case insensitive)
             Pair.of("http://mystuff.stuff?lr=ita", "it"),
-            Pair.of("http://mystuff.stuff?LR=français", "fr")
+            Pair.of("http://mystuff.stuff?LR=français", "fr"),
+
+            // Match on second profile
+            Pair.of("http://other.com?lr=it", "it"),
+            Pair.of("http://OTHER.COM?LR=es", "es")
     );
 
     private URLLanguageDetector makeNewDetector(String configFile) throws IOException {

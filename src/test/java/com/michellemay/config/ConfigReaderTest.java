@@ -18,7 +18,10 @@ package com.michellemay.config;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,23 +29,52 @@ import static org.junit.Assert.assertEquals;
  * Unit test for simple App.
  */
 public class ConfigReaderTest {
+    String configStr = "{\n" +
+            "  \"mappings\":[\n" +
+            "    {\n" +
+            "      \"name\": \"mytest\"\n" +
+            "    }\n" +
+            "  ],\n" +
+            "\n" +
+            "  \"matchers\":[\n" +
+            "    {\n" +
+            "      \"name\":\"myquerystring\",\n" +
+            "      \"urlpart\":\"querystring\",\n" +
+            "      \"patterns\":[\"loc=(?<lang>.*)\"]\n" +
+            "    }\n" +
+            "  ],\n" +
+            "\n" +
+            "  \"profiles\": [\n" +
+            "    {\n" +
+            "      \"name\":\"custom\",\n" +
+            "      \"domains\":[\"mystuff.stuff\"],\n" +
+            "      \"matchers\":[\n" +
+            "        {\n" +
+            "          \"matcher\":\"myquerystring\",\n" +
+            "          \"mapping\":\"mytest2\"\n" +
+            "        }\n" +
+            "      ]\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}\n";
+
     @Test
     public void testReadBuiltInDefault() throws Exception {
         // Coverage:
         new ConfigReader();
 
-        Config config1 = ConfigReader.readBuiltIn();
-        assertEquals(config1.mappings.size(), 2);
-        assertEquals(config1.matchers.size(), 3);
-        assertEquals(config1.profiles.size(), 1);
+        Config config = ConfigReader.readBuiltIn();
+        assertEquals(config.mappings.size(), 2);
+        assertEquals(config.matchers.size(), 3);
+        assertEquals(config.profiles.size(), 1);
     }
 
     @Test
     public void testReadBuiltInTest() throws Exception {
-        Config config2 = ConfigReader.readBuiltIn(ConfigReader.TEST_CONFIG);
-        assertEquals(config2.mappings.size(), 2);
-        assertEquals(config2.matchers.size(), 4);
-        assertEquals(config2.profiles.size(), 1);
+        Config config = ConfigReader.readBuiltIn(ConfigReader.TEST_CONFIG);
+        assertEquals(config.mappings.size(), 2);
+        assertEquals(config.matchers.size(), 4);
+        assertEquals(config.profiles.size(), 2);
     }
 
     @Test(expected = IOException.class)
@@ -52,55 +84,27 @@ public class ConfigReaderTest {
 
     @Test
     public void testReadFromString() throws Exception {
-        String configStr = "{\n" +
-                "  \"mappings\":[\n" +
-                "    {\n" +
-                "      \"name\":\"mytest\",\n" +
-                "      \"extend\":[\"ISO-639-ALPHA-2\", \"ISO-639-ALPHA-3\"],\n" +
-                "      \"add\":{\"en\":\"english,anglais\",\"es\":\"spanish,espagnol\"},\n" +
-                "      \"override\":{\"fr\":\"french,français\"},\n" +
-                "      \"filter\":\"en,fr-*,de,es,it\",\n" +
-                "      \"casesensitive\":\"true\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"name\": \"mytest2\",\n" +
-                "      \"extend\":[\"ISO-639-ALPHA-2\"]\n" +
-                "    }\n" +
-                "  ],\n" +
-                "\n" +
-                "  \"matchers\":[\n" +
-                "    {\n" +
-                "      \"name\":\"mypathregex\",\n" +
-                "      \"urlpart\":\"path\",\n" +
-                "      \"patterns\":[\"/docs/(?<lang>[^/]+)/index\\\\.html\"],\n" +
-                "      \"mapping\":\"mytest\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"name\":\"myquerystring\",\n" +
-                "      \"urlpart\":\"querystring\",\n" +
-                "      \"patterns\":[\"(cv_)?lang(uage)?=(?<lang>.*)\",\"loc=(?<lang>.*)\"],\n" +
-                "      \"casesensitive\":\"true\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "\n" +
-                "  \"profiles\": [\n" +
-                "    {\n" +
-                "      \"name\":\"custom\",\n" +
-                "      \"domains\":[\"mystuff.stuff\",\"my.*\\\\.stuff\"],\n" +
-                "      \"mapping\":\"mytest\",\n" +
-                "      \"matchers\":[\n" +
-                "        {\n" +
-                "          \"matcher\":\"mypathregex\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"matcher\":\"myquerystring\",\n" +
-                "          \"mapping\":\"mytest2\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}\n";
-        ConfigReader.read(configStr);
+        Config config = ConfigReader.read(configStr);
+        assertEquals(config.mappings.size(), 1);
+        assertEquals(config.matchers.size(), 1);
+        assertEquals(config.profiles.size(), 1);
     }
 
+    @Test
+    public void testReadFromInputStream() throws Exception {
+        InputStream stream = new ByteArrayInputStream(configStr.getBytes(StandardCharsets.UTF_8));
+        Config config = ConfigReader.read(stream);
+        assertEquals(config.mappings.size(), 1);
+        assertEquals(config.matchers.size(), 1);
+        assertEquals(config.profiles.size(), 1);
+    }
+
+    @Test
+    public void testReadFromInputStreamU16() throws Exception {
+        InputStream stream = new ByteArrayInputStream(configStr.getBytes(StandardCharsets.UTF_16));
+        Config config = ConfigReader.read(stream, "utf-16");
+        assertEquals(config.mappings.size(), 1);
+        assertEquals(config.matchers.size(), 1);
+        assertEquals(config.profiles.size(), 1);
+    }
 }

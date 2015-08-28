@@ -62,6 +62,16 @@
           "matcher":"myquerystring2"
         }
       ]
+    },
+    {
+      "name":"other",
+      "domains":["other\\.com"],
+      "mapping":"mytest2",
+      "matchers":[
+        {
+          "matcher":"myquerystring2"
+        }
+      ]
     }
   ]
 }

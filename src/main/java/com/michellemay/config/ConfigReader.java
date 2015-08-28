@@ -29,11 +29,11 @@ public class ConfigReader {
     public static final String TEST_CONFIG = "test-profiles.json";
 
     /**
-     * Read from an InputStream in UTF-8.
+     * Read from an InputStream with given encoding.
      */
-    public static Config read(InputStream inputStream) throws IOException {
+    public static Config read(InputStream inputStream, String encoding) throws IOException {
         StringBuilder buffer = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("utf-8")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName(encoding)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (buffer.length() > 0) {
@@ -44,6 +44,13 @@ public class ConfigReader {
         }
 
         return read(buffer.toString());
+    }
+
+    /**
+     * Read from an InputStream in UTF-8.
+     */
+    public static Config read(InputStream inputStream) throws IOException {
+        return read(inputStream, "utf-8");
     }
 
     /**
