@@ -70,51 +70,56 @@ Mappings are selected in the following order:
 
 ```json
 
-    {
-      "mappings":[
-        {
-          "name":"all",
-          "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS"]
-        }
-      ],
-    
-      "matchers":[
-        {
-          "name":"hostname",
-          "urlpart":"hostname",
-          "patterns":["(?<lang>[^\\.]+)\\..*"]
-        },
-        {
-          "name":"path",
-          "urlpart":"path",
-          "patterns":["/(?<lang>[^/]+)/.*"]
-        },
-        {
-          "name":"querystring",
-          "urlpart":"querystring",
-          "patterns":["lang(uage)?=(?<lang>.*)"]
-        }
-      ],
-    
-      "profiles": [
-        {
-          "name":"default",
-          "domains":[".*"],
-          "mapping":"ISO-639-ALPHA-2",
-          "matchers":[
-            {
-              "matcher":"hostname"
-            },
-            {
-              "matcher":"path"
-            },
-            {
-              "matcher":"querystring",
-              "mapping":"all"
-            }
-          ]
-        }
-      ]
-    }
-    
+  {
+    "mappings":[
+      {
+        "name":"all",
+        "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS","ENGLISH_NAMES"]
+      },
+      {
+        "name":"ISO-639-CODES",
+        "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3"]
+      }
+    ],
+  
+    "matchers":[
+      {
+        "name":"hostname",
+        "urlpart":"hostname",
+        "patterns":["(?<lang>[^\\.]+)(\\.[^\\.]+){2,}"]
+      },
+      {
+        "name":"path",
+        "urlpart":"path",
+        "patterns":["/(?<lang>[^/]+)(/.*)?"]
+      },
+      {
+        "name":"querystring",
+        "urlpart":"querystring",
+        "patterns":["lang(uage)?=(?<lang>.*)"]
+      }
+    ],
+  
+    "profiles": [
+      {
+        "name":"default",
+        "domains":[".*"],
+        "mapping":"ISO-639-CODES",
+        "matchers":[
+          {
+            "matcher":"hostname"
+          },
+          {
+            "matcher":"path"
+          },
+          {
+            "matcher":"querystring",
+            "mapping":"all"
+          }
+        ]
+      }
+    ]
+  }
+  
+ 
 ```
