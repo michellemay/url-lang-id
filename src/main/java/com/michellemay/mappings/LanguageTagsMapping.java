@@ -18,8 +18,8 @@ package com.michellemay.mappings;
 
 import org.apache.commons.lang3.LocaleUtils;
 
-import java.util.HashMap;
 import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * @author Michel Lemay
@@ -29,9 +29,10 @@ public class LanguageTagsMapping extends Mapping {
 
     public LanguageTagsMapping() {
         super(NAME);
+        this.withCaseSensitive(false);
 
-        // Build reverse map
-        HashMap<String, Locale> map = new HashMap<String, Locale>();
+        // Build reverse map.  Use a tree map to offer case insensitiveness while preserving keys case (useful for extending)
+        TreeMap<String, Locale> map = new TreeMap<String, Locale>(this.getCaseSensitive() ? null : String.CASE_INSENSITIVE_ORDER);
         for (Locale loc : LocaleUtils.availableLocaleList()) {
             String isoCode = loc.getLanguage();
             if (isoCode.length() > 0) {
@@ -43,6 +44,6 @@ public class LanguageTagsMapping extends Mapping {
                 }
             }
         }
-        this.withMapping(map).withCaseSensitive(false);
+        this.withMapping(map);
     }
 }

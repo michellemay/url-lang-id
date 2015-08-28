@@ -28,5 +28,5 @@ public class MappingConfig {
     public Map<String, String> add;
     public Map<String, String> override;
     public String filter;
-    public Boolean casesensitive = false;
+    public boolean casesensitive = false;
 }

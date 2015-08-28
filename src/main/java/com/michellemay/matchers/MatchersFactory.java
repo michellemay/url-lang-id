@@ -82,9 +82,27 @@ public class MatchersFactory {
             patterns.add(Pattern.compile(patternStr, flags));
         });
 
-        return new Matcher(matcherConfig.name, matcherConfig.urlpart)
+        return createMatcher(matcherConfig.name, matcherConfig.urlpart)
                 .withPatterns(patterns)
                 .withCaseSensitive(matcherConfig.casesensitive)
                 .withMapping(mapping);
+    }
+
+    private Matcher createMatcher(String name, Matcher.UrlPart urlpart) {
+        Matcher matcher = null;
+        switch (urlpart) {
+            case hostname:
+                matcher = new HostnameMatcher(name);
+                break;
+            case path:
+                matcher = new PathMatcher(name);
+                break;
+            case querystring:
+                matcher = new QuerystringMatcher(name);
+                break;
+            default:
+                throw new RuntimeException("Invalid value in UrlPart enum!");
+        }
+        return matcher;
     }
 }

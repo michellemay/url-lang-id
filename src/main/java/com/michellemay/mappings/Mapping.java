@@ -16,26 +16,32 @@
 
 package com.michellemay.mappings;
 
-import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Michel Lemay
  */
 public class Mapping {
     private String name;
-    private HashMap<String, Locale> mapping = new HashMap<String, Locale>();
-    private Boolean caseSensitive;
+    private Map<String, Locale> mapping;
+    private boolean caseSensitive;
 
     public String getName() { return name; }
 
-    public HashMap<String, Locale> getMapping() { return mapping; }
-    public Mapping withMapping(HashMap<String, Locale> mapping) { this.mapping = mapping; return this; }
+    public Map<String, Locale> getMapping() { return mapping; }
+    public Mapping withMapping(Map<String, Locale> mapping) { this.mapping = mapping; return this; }
 
-    public Boolean getCaseSensitive() { return caseSensitive; }
-    public Mapping withCaseSensitive(Boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
+    public boolean getCaseSensitive() { return caseSensitive; }
+    public Mapping withCaseSensitive(boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
 
     protected Mapping(String name) {
         this.name = name;
+    }
+
+    public Optional<Locale> detect(String rawValue) {
+        String value = caseSensitive ? rawValue : rawValue.toLowerCase();
+        return Optional.ofNullable(mapping.get(value));
     }
 }

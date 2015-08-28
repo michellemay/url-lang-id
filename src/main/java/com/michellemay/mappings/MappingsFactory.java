@@ -61,7 +61,7 @@ public class MappingsFactory {
             throw new IllegalArgumentException("Blank mapping name!");
         }
 
-        HashMap<String, Locale> curMap = new HashMap<String, Locale>();
+        Map<String, Locale> curMap = new TreeMap<String, Locale>(mappingConfig.casesensitive ? null : String.CASE_INSENSITIVE_ORDER);
 
         // Inherit all mappings from bases
         if (mappingConfig.extend != null) {

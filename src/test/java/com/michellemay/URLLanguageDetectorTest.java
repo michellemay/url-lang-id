@@ -45,13 +45,15 @@ public class URLLanguageDetectorTest {
             Pair.of("http://en.test.com/", "en"),
             Pair.of("http://www.test.com/en/index.html", "en"),
             Pair.of("http://www.test.com/path/index.html?lang=en", "en"),
-            Pair.of("http://www.test.com/path/en/index.html", "en"),
             Pair.of("http://fr:fr@www.test.com:8080/path/index.html?lang=en", "en"),
+            Pair.of("http://www.test.com/path/index.html?lang=en&lang=fr", "en"),  // Multiple lang=.. parts
             // Must not detect language:
             // Use of %ca escape sequence should not match catalan
             Pair.of("http://test.com/?lang=%ca%80", ""),
             // Domain too short
-            Pair.of("http://en.com/", "")
+            Pair.of("http://en.com/", ""),
+            // Last path element not supported by default.
+            Pair.of("http://www.test.com/path/en/index.html", "")
     );
 
 
@@ -78,7 +80,7 @@ public class URLLanguageDetectorTest {
                     Optional<Locale> detectedLanguage = testAndResult.getValue();
                     boolean localTestFailed = (detectedLanguage.isPresent() != !test.getValue().isEmpty());
                     if (!localTestFailed && detectedLanguage.isPresent()) {
-                        localTestFailed = detectedLanguage.get().equals(LocaleUtils.toLocale(test.getValue()));
+                        localTestFailed = !detectedLanguage.get().equals(LocaleUtils.toLocale(test.getValue()));
                     }
                     return localTestFailed;
                 }).collect(Collectors.toList());

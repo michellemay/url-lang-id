@@ -32,7 +32,7 @@ public class ConfigReaderTest {
         new ConfigReader();
 
         Config config1 = ConfigReader.readBuiltIn();
-        assertEquals(config1.mappings.size(), 1);
+        assertEquals(config1.mappings.size(), 2);
         assertEquals(config1.matchers.size(), 3);
         assertEquals(config1.profiles.size(), 1);
     }

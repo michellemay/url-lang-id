@@ -27,18 +27,19 @@ import java.util.regex.Pattern;
 /**
  * @author Michel Lemay
  */
-public class Matcher {
+public abstract class Matcher {
+    private static String LANG_GROUP_NAME = "lang";
     public enum UrlPart { hostname, path, querystring };
 
     private String name;
-    private Matcher.UrlPart urlpart;
+    private Matcher.UrlPart urlPart;
     private List<Pattern> patterns;
     private Optional<Mapping> mapping;
-    private Boolean caseSensitive;
+    private boolean caseSensitive;
 
     public String getName() { return name; }
 
-    public UrlPart getUrlPart() { return urlpart; }
+    public UrlPart getUrlPart() { return urlPart; }
 
     public List<Pattern> getPatterns() { return patterns; }
     public Matcher withPatterns(List<Pattern> patterns) { this.patterns = patterns; return this; }
@@ -46,24 +47,42 @@ public class Matcher {
     public Optional<Mapping> getMapping() { return mapping; }
     public Matcher withMapping(Optional<Mapping> mapping) { this.mapping = mapping; return this; }
 
-    public Boolean getCaseSensitive() { return caseSensitive; }
-    public Matcher withCaseSensitive(Boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
+    public boolean getCaseSensitive() { return caseSensitive; }
+    public Matcher withCaseSensitive(boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
 
     protected Matcher(String name, UrlPart urlpart) {
         this.name = name;
-        this.urlpart = urlpart;
+        this.urlPart = urlpart;
     }
 
     public Optional<Locale> detect(URL url) {
-        return Optional.empty();
+        Optional<Locale> lang = Optional.empty();
+
+        search: {
+            List<String> parts = getParts(url);
+            for (String part : parts) {
+                for (Pattern p : getPatterns()) {
+                    java.util.regex.Matcher regexMatcher = p.matcher(part);
+                    if (regexMatcher.matches()) {
+                        lang = mapping.get().detect(regexMatcher.group(LANG_GROUP_NAME));
+                        if (lang.isPresent()) {
+                            break search;
+                        }
+                    }
+                }
+            }
+        }
+        return lang;
     }
+
+    protected abstract List<String> getParts(URL url);
 
     // So I've heard Cloneable is broken..
     public Matcher shallowCopyWithMapping(Optional<Mapping> newMapping) {
-        return new Matcher(this.name, this.urlpart)
+        return this.cloneInstance()
                 .withPatterns(this.patterns)
                 .withCaseSensitive(this.caseSensitive)
                 .withMapping(newMapping);
     }
-
+    protected abstract Matcher cloneInstance();
 }

@@ -14,12 +14,12 @@
     {
       "name":"hostname",
       "urlpart":"hostname",
-      "patterns":["(?<lang>[^\\.]+)\\..*"]
+      "patterns":["(?<lang>[^\\.]+)(\\.[^\\.]+){2,}"]
     },
     {
       "name":"path",
       "urlpart":"path",
-      "patterns":["/(?<lang>[^/]+)/.*"]
+      "patterns":["/(?<lang>[^/]+)(/.*)?"]
     },
     {
       "name":"querystring",

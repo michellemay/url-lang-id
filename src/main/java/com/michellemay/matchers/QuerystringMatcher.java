@@ -16,15 +16,32 @@
 
 package com.michellemay.matchers;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import java.net.URL;
 import java.util.List;
 
 /**
  * @author Michel Lemay
  */
-public class MatcherConfig {
-    public String name;
-    public Matcher.UrlPart urlpart;
-    public List<String> patterns;
-    public String mapping;
-    public boolean casesensitive = false;
+public class QuerystringMatcher extends Matcher {
+    public QuerystringMatcher(String name) {
+        super(name, UrlPart.hostname);
+    }
+
+    @Override
+    protected List<String> getParts(URL url) {
+        String queryPart = url.getQuery();
+        if (queryPart != null) {
+            return ImmutableList.copyOf(queryPart.split("&"));
+        } else {
+            return ImmutableList.of();
+        }
+    }
+
+    @Override
+    protected Matcher cloneInstance() {
+        return new QuerystringMatcher(this.getName());
+    }
 }
