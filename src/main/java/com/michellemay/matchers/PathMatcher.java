@@ -31,11 +31,7 @@ public class PathMatcher extends Matcher {
 
     @Override
     protected List<String> getParts(URL url) {
-        if (url.getPath() != null) {
-            return ImmutableList.of(url.getPath());
-        } else {
-            return ImmutableList.of();
-        }
+        return url.getPath() != null ? ImmutableList.of(url.getPath()) : ImmutableList.of();
     }
 
     @Override

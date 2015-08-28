@@ -3,29 +3,42 @@
     {
       "name":"mytest",
       "extend":["ISO-639-ALPHA-2", "ISO-639-ALPHA-3"],
-      "add":{"en":"english,anglais","es":"spanish,espagnol"},
+      "add":{"en":"english,ANGLAIS","es":"spanish,espagnol"},
       "override":{"fr":"french,français"},
-      "filter":"en,fr-*,de,es,it",
+      "filter":"en,fr,de,es,it",
       "casesensitive":"true"
     },
     {
       "name": "mytest2",
-      "extend":["ISO-639-ALPHA-2"]
+      "extend":["ISO-639-ALPHA-2"],
+      "casesensitive":"true"
     }
   ],
 
   "matchers":[
     {
-      "name":"mypathregex",
+      "name":"mypathregex1",
       "urlpart":"path",
       "patterns":["/docs/(?<lang>[^/]+)/index\\.html"],
       "mapping":"mytest"
     },
     {
-      "name":"myquerystring",
+      "name":"mypathregex2",
+      "urlpart":"path",
+      "patterns":["/KB/(?<lang>[^/]+)/index\\.html"],
+      "mapping":"mytest",
+      "casesensitive":"true"
+    },
+    {
+      "name":"myquerystring1",
       "urlpart":"querystring",
       "patterns":["(cv_)?lang(uage)?=(?<lang>.*)","loc=(?<lang>.*)"],
       "casesensitive":"true"
+    },
+    {
+      "name":"myquerystring2",
+      "urlpart":"querystring",
+      "patterns":["lr=(?<lang>.*)"]
     }
   ],
 
@@ -36,11 +49,17 @@
       "mapping":"mytest",
       "matchers":[
         {
-          "matcher":"mypathregex"
+          "matcher":"mypathregex1"
         },
         {
-          "matcher":"myquerystring",
+          "matcher":"mypathregex2"
+        },
+        {
+          "matcher":"myquerystring1",
           "mapping":"mytest2"
+        },
+        {
+          "matcher":"myquerystring2"
         }
       ]
     }

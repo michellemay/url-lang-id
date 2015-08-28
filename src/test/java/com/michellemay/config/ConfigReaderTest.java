@@ -41,7 +41,7 @@ public class ConfigReaderTest {
     public void testReadBuiltInTest() throws Exception {
         Config config2 = ConfigReader.readBuiltIn(ConfigReader.TEST_CONFIG);
         assertEquals(config2.mappings.size(), 2);
-        assertEquals(config2.matchers.size(), 2);
+        assertEquals(config2.matchers.size(), 4);
         assertEquals(config2.profiles.size(), 1);
     }
 
