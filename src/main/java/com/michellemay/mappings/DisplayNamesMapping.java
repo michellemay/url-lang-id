@@ -24,23 +24,20 @@ import java.util.Locale;
 /**
  * @author Michel Lemay
  */
-public class LanguageTagsMapping extends Mapping {
-    static public String NAME = "LANGUAGE_TAGS";
+public class DisplayNamesMapping extends Mapping {
+    private Locale displayLocale;
 
-    public LanguageTagsMapping() {
-        super(NAME);
+    public DisplayNamesMapping(String name, Locale displayLocale) {
+        super(name);
+        this.displayLocale = displayLocale;
 
         // Build reverse map
         HashMap<String, Locale> map = new HashMap<String, Locale>();
         for (Locale loc : LocaleUtils.availableLocaleList()) {
-            String isoCode = loc.getLanguage();
-            if (isoCode.length() > 0) {
-                String displayValue = loc.toLanguageTag();
-                if (!map.containsKey(displayValue)) {
-                    // Also add variant with underscores
-                    map.put(displayValue, loc);
-                    map.put(displayValue.replace('-', '_'), loc);
-                }
+            String displayName = loc.getDisplayName(displayLocale).toLowerCase();
+            String isoCode = loc.getLanguage().toLowerCase();
+            if (isoCode.length() > 0 && !map.containsKey(displayName)) {
+                map.put(displayName, LocaleUtils.toLocale(isoCode));
             }
         }
         this.withMapping(map).withCaseSensitive(false);

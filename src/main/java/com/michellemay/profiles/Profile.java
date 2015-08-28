@@ -16,12 +16,12 @@
 
 package com.michellemay.profiles;
 
-import com.michellemay.mappings.Mapping;
 import com.michellemay.matchers.Matcher;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -45,11 +45,18 @@ public class Profile {
         this.name = name;
     }
 
-    public Optional<String> detect(URL url) {
-        return Optional.empty();
+    public Optional<Locale> detect(URL url) {
+        return matchers
+                .stream()
+                .map((matcher) -> matcher.detect(url))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
     public boolean match(String host) {
-        return domains.stream().anyMatch((p) -> p.matcher(host).matches());
+        return domains
+                .stream()
+                .anyMatch((p) -> p.matcher(host).matches());
     }
 }

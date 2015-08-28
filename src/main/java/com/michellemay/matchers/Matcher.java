@@ -18,7 +18,9 @@ package com.michellemay.matchers;
 
 import com.michellemay.mappings.Mapping;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -50,6 +52,10 @@ public class Matcher {
     protected Matcher(String name, UrlPart urlpart) {
         this.name = name;
         this.urlpart = urlpart;
+    }
+
+    public Optional<Locale> detect(URL url) {
+        return Optional.empty();
     }
 
     // So I've heard Cloneable is broken..

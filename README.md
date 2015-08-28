@@ -24,9 +24,9 @@ Mappings attributes:
 
 - "name": Mapping name.
 - "extend": List of base mappings to inherit from.
-- "add": Adds key-value pairs to the mappings. Values are comma separated list of names.
+- "add": Adds key-value pairs to the mappings. Keys are locale tags. Values are comma separated list of display names.
 - "override" Replace base mappings with new ones.
-- "filter": Filter base mappings.
+- "filter": Keep only base mappings which matches languages ranges (RFC 4647).
 - "casesensitive": Value matching case sensitiveness (default = false).
 
 Default mappings built from Java Locale:
@@ -34,6 +34,7 @@ Default mappings built from Java Locale:
 - ISO-639-ALPHA-2: 2 letters language codes (ex: en, fr).
 - ISO-639-ALPHA-3: 3 letters language codes (ex: eng, fra).
 - LANGUAGE_TAGS: Common language tags with country codes (ex: en_US, es-PT). Also matches underscores and dashes.
+- ENGLISH_NAMES: Language display name in en_US. (ex: english, french, croatian)
 
 ### Matchers
 

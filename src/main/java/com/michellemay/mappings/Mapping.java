@@ -24,13 +24,13 @@ import java.util.Locale;
  */
 public class Mapping {
     private String name;
-    private HashMap<String, String> mapping = new HashMap<String, String>();
+    private HashMap<String, Locale> mapping = new HashMap<String, Locale>();
     private Boolean caseSensitive;
 
     public String getName() { return name; }
 
-    public HashMap<String, String> getMapping() { return mapping; }
-    public Mapping withMapping(HashMap<String, String> mapping) { this.mapping = mapping; return this; }
+    public HashMap<String, Locale> getMapping() { return mapping; }
+    public Mapping withMapping(HashMap<String, Locale> mapping) { this.mapping = mapping; return this; }
 
     public Boolean getCaseSensitive() { return caseSensitive; }
     public Mapping withCaseSensitive(Boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }

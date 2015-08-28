@@ -17,6 +17,8 @@
 package com.michellemay.mappings;
 
 
+import org.apache.commons.lang3.LocaleUtils;
+
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -30,11 +32,13 @@ public class ISO639Alpha2Mapping extends Mapping {
         super(NAME);
 
         // Build reverse map
-        HashMap<String, String> map = new HashMap<String, String>();
-        for (Locale loc : Locale.getAvailableLocales()) {
-            String code = loc.getLanguage().toLowerCase();
-            if (code.length() > 0 && !map.containsKey(code)) {
-                map.put(code, code);
+        HashMap<String, Locale> map = new HashMap<String, Locale>();
+        for (String isoCode : Locale.getISOLanguages()) {
+            if (isoCode.length() > 0) {
+                String displayValue = isoCode.toLowerCase();
+                if (!map.containsKey(displayValue)) {
+                    map.put(displayValue, LocaleUtils.toLocale(isoCode));
+                }
             }
         }
         this.withMapping(map).withCaseSensitive(false);

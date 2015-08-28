@@ -2,7 +2,11 @@
   "mappings":[
     {
       "name":"all",
-      "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS"]
+      "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3","LANGUAGE_TAGS","ENGLISH_NAMES"]
+    },
+    {
+      "name":"ISO-639-CODES",
+      "extend":["ISO-639-ALPHA-2","ISO-639-ALPHA-3"]
     }
   ],
 
@@ -28,7 +32,7 @@
     {
       "name":"default",
       "domains":[".*"],
-      "mapping":"ISO-639-ALPHA-2",
+      "mapping":"ISO-639-CODES",
       "matchers":[
         {
           "matcher":"hostname"

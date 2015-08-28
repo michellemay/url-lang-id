@@ -23,6 +23,7 @@ import com.michellemay.profiles.ProfilesFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -36,8 +37,8 @@ public class URLLanguageDetectorImpl implements URLLanguageDetector {
     }
 
     @Override
-    public Optional<String> detect(String url) {
-        Optional<String> lang = Optional.empty();
+    public Optional<Locale> detect(String url) {
+        Optional<Locale> lang = Optional.empty();
 
         try {
             // First, make sure we have a valid url

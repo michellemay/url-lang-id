@@ -59,7 +59,7 @@ public class ConfigReaderTest {
                 "      \"extend\":[\"ISO-639-ALPHA-2\", \"ISO-639-ALPHA-3\"],\n" +
                 "      \"add\":{\"en\":\"english,anglais\",\"es\":\"spanish,espagnol\"},\n" +
                 "      \"override\":{\"fr\":\"french,français\"},\n" +
-                "      \"filter\":[\"en\",\"fr\",\"de\",\"es\",\"it\"],\n" +
+                "      \"filter\":\"en,fr-*,de,es,it\",\n" +
                 "      \"casesensitive\":\"true\"\n" +
                 "    },\n" +
                 "    {\n" +

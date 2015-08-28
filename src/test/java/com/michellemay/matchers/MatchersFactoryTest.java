@@ -45,7 +45,7 @@ public class MatchersFactoryTest {
     public void testInvalidMatcherName() throws Exception {
         // Matcher must have a name
         MatcherConfig config = new MatcherConfig();
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -53,7 +53,7 @@ public class MatchersFactoryTest {
         // Matcher must have a urlpart
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -62,8 +62,7 @@ public class MatchersFactoryTest {
         MatcherConfig config = new MatcherConfig();
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
-        assertTrue(f.getMatchers().isEmpty());
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -73,7 +72,7 @@ public class MatchersFactoryTest {
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
         config.patterns = ImmutableList.of("(?<invalidgroupname>[^\\.]+\\..*");
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test(expected = PatternSyntaxException.class)
@@ -83,7 +82,7 @@ public class MatchersFactoryTest {
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
         config.patterns = ImmutableList.of("(?<lang>.*]");
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -94,7 +93,7 @@ public class MatchersFactoryTest {
         config.urlpart = Matcher.UrlPart.hostname;
         config.patterns = ImmutableList.of("(?<lang>[^\\.]+\\..*)");
         config.mapping = "dummymapping";
-        MatchersFactory f = new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(Collections.singletonList(config), new MappingsFactory(Collections.emptyList()));
     }
 
     @Test
@@ -121,6 +120,6 @@ public class MatchersFactoryTest {
         config.name = "test";
         config.urlpart = Matcher.UrlPart.hostname;
         config.patterns = ImmutableList.of("(?<lang>[^\\.]+)\\..*");
-        MatchersFactory f = new MatchersFactory(ImmutableList.of(config, config), new MappingsFactory(Collections.emptyList()));
+        new MatchersFactory(ImmutableList.of(config, config), new MappingsFactory(Collections.emptyList()));
     }
 }

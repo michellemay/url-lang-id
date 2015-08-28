@@ -16,17 +16,15 @@
 
 package com.michellemay.mappings;
 
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.LocaleUtils;
 
 /**
  * @author Michel Lemay
  */
-public class MappingConfig {
-    public String name;
-    public List<String> extend;
-    public Map<String, String> add;
-    public Map<String, String> override;
-    public String filter;
-    public Boolean casesensitive = false;
+public class EnglishNamesMapping extends DisplayNamesMapping {
+    static public String NAME = "ENGLISH_NAMES";
+
+    public EnglishNamesMapping() {
+        super(NAME, LocaleUtils.toLocale("en_US"));
+    }
 }

@@ -37,7 +37,7 @@ public class MappingConfigTest {
                 "      \"extend\":[\"ISO-639-ALPHA-2\", \"ISO-639-ALPHA-3\"],\n" +
                 "      \"add\":{\"en\":\"english,anglais\",\"es\":\"spanish,espagnol\"},\n" +
                 "      \"override\":{\"fr\":\"french,français\"},\n" +
-                "      \"filter\":[\"en\",\"fr\",\"de\",\"es\",\"it\"],\n" +
+                "      \"filter\":\"en,fr-*,de,es,it\",\n" +
                 "      \"casesensitive\":\"true\"\n" +
                 "    }";
 
@@ -51,7 +51,7 @@ public class MappingConfigTest {
         assertTrue(mapping.add.containsKey("es") && mapping.add.get("es").equals("spanish,espagnol"));
         assertEquals(mapping.override.size(), 1);
         assertTrue(mapping.override.containsKey("fr") && mapping.override.get("fr").equals("french,français"));
-        assertTrue(mapping.filter.size() == 5 && mapping.filter.containsAll(Arrays.asList("en,fr,de,es,it".split(","))));
+        assertEquals(mapping.filter, "en,fr-*,de,es,it");
         assertTrue(mapping.casesensitive);
     }
 }

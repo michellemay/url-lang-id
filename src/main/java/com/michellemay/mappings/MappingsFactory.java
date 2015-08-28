@@ -17,6 +17,7 @@
 package com.michellemay.mappings;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -36,7 +37,7 @@ public class MappingsFactory {
 
         if (mappingsConfig != null) {
             for (MappingConfig mappingConfig : mappingsConfig) {
-                addMapping(createMapping(mappingConfig));
+                addMapping(createCustomMapping(mappingConfig));
             }
         }
     }
@@ -52,14 +53,15 @@ public class MappingsFactory {
         addMapping(new ISO639Alpha2Mapping());
         addMapping(new ISO639Alpha3Mapping());
         addMapping(new LanguageTagsMapping());
+        addMapping(new EnglishNamesMapping());
     }
 
-    private Mapping createMapping(MappingConfig mappingConfig) {
+    private Mapping createCustomMapping(MappingConfig mappingConfig) {
         if (StringUtils.isBlank(mappingConfig.name)) {
             throw new IllegalArgumentException("Blank mapping name!");
         }
 
-        HashMap<String, String> curMap = new HashMap<String, String>();
+        HashMap<String, Locale> curMap = new HashMap<String, Locale>();
 
         // Inherit all mappings from bases
         if (mappingConfig.extend != null) {
@@ -72,21 +74,22 @@ public class MappingsFactory {
             }
         }
 
-        // Filter unwanted languages
-        if (mappingConfig.filter != null) {
-            Set<String> toKeep = new HashSet<String>(Lists.transform(mappingConfig.filter, (x) -> x.toLowerCase().trim()));
+        // Filter out unwanted languages
+        if (StringUtils.isNotBlank(mappingConfig.filter)) {
+            List<Locale.LanguageRange> priorityList = Locale.LanguageRange.parse(mappingConfig.filter);
+            List<Locale> toKeep = Locale.filter(priorityList, curMap.values());
             curMap.entrySet().removeIf(e -> !toKeep.contains(e.getValue()));
         }
 
         // Add new values
         if (mappingConfig.add != null) {
-            mappingConfig.add.forEach((k, v) -> {
-                String lang = k.toLowerCase().trim();
-                String[] values = v.split(",");
-                for (String value : values) {
+            mappingConfig.add.forEach((lang, values) -> {
+                Locale langLocale = LocaleUtils.toLocale(lang);
+                String[] displayValues = values.split(",");
+                for (String value : displayValues) {
                     String cleanedValue = value.trim();
                     if (!cleanedValue.isEmpty()) {
-                        curMap.putIfAbsent(cleanedValue, lang);
+                        curMap.putIfAbsent(cleanedValue, langLocale);
                     }
                 }
             });
@@ -94,17 +97,19 @@ public class MappingsFactory {
 
         // Override values
         if (mappingConfig.override != null) {
-            mappingConfig.override.forEach((k, v) -> {
-                // Remove all mappings to given language
-                String lang = k.toLowerCase().trim();
-                curMap.entrySet().removeIf(e -> e.getValue().equals(lang));
+            mappingConfig.override.forEach((lang, values) -> {
+                Locale langLocale = LocaleUtils.toLocale(lang);
+
+                // Remove all existing mappings
+                String langTag = langLocale.toLanguageTag();
+                curMap.entrySet().removeIf(e -> e.getValue().toLanguageTag().equals(langTag));
 
                 // Add new mappings.
-                String[] values = v.split(",");
-                for (String value : values) {
+                String[] displayValues = values.split(",");
+                for (String value : displayValues) {
                     String cleanedValue = value.trim();
                     if (!cleanedValue.isEmpty()) {
-                        curMap.put(cleanedValue, lang);
+                        curMap.put(cleanedValue, langLocale);
                     }
                 }
             });

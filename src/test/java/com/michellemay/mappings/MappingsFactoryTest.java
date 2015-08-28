@@ -19,7 +19,9 @@ package com.michellemay.mappings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.junit.Test;
+
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,16 +38,26 @@ public class MappingsFactoryTest {
     @Test
     public void testDefaultMappings() throws Exception {
         MappingsFactory f = new MappingsFactory(Collections.emptyList());
-        assertEquals(f.getMappings().size(), 3);
+
+        assertEquals(f.getMappings().size(), 4);
+
         assertTrue(f.getMappings().containsKey("ISO-639-ALPHA-2"));
+        assertEquals(f.getMappings().get("ISO-639-ALPHA-2").getMapping().get("en"), LocaleUtils.toLocale("en"));
+
         assertTrue(f.getMappings().containsKey("ISO-639-ALPHA-3"));
+        assertEquals(f.getMappings().get("ISO-639-ALPHA-3").getMapping().get("eng"), LocaleUtils.toLocale("en"));
+
         assertTrue(f.getMappings().containsKey("LANGUAGE_TAGS"));
+        assertEquals(f.getMappings().get("LANGUAGE_TAGS").getMapping().get("en-US"), LocaleUtils.toLocale("en_US"));
+
+        assertTrue(f.getMappings().containsKey("ENGLISH_NAMES"));
+        assertEquals(f.getMappings().get("ENGLISH_NAMES").getMapping().get("french"), LocaleUtils.toLocale("fr"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateEmptyMapping() throws Exception {
         MappingConfig config = new MappingConfig();
-        MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
+        new MappingsFactory(Collections.singletonList(config));
     }
 
     @Test
@@ -64,7 +76,7 @@ public class MappingsFactoryTest {
         MappingConfig config = new MappingConfig();
         config.name = "test";
         config.extend = Collections.singletonList("notfound");
-        MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
+        new MappingsFactory(Collections.singletonList(config));
     }
 
     @Test
@@ -76,44 +88,52 @@ public class MappingsFactoryTest {
         assertTrue(f.getMappings().containsKey("test"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateMappingInvalidLocaleName() throws Exception {
+        MappingConfig config = new MappingConfig();
+        config.name = "test";
+        config.add = ImmutableMap.of("EN", "english,anglais");
+        new MappingsFactory(Collections.singletonList(config));
+    }
+
     @Test
     public void testCreateMappingAdd() throws Exception {
         MappingConfig config = new MappingConfig();
         config.name = "test";
-        config.add = ImmutableMap.of("EN", "english,anglais", "fr", "french, francais");
+        config.add = ImmutableMap.of("en_US", "english,anglais", "fr", "french, francais");
         MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
         assertTrue(f.getMappings().containsKey("test"));
 
         Mapping mapping = f.getMappings().get("test");
-        assertEquals(mapping.getMapping().get("english"), "en");
-        assertEquals(mapping.getMapping().get("anglais"), "en");
-        assertEquals(mapping.getMapping().get("french"), "fr");
-        assertEquals(mapping.getMapping().get("francais"), "fr");
+        assertEquals(mapping.getMapping().get("english"), LocaleUtils.toLocale("en_US"));
+        assertEquals(mapping.getMapping().get("anglais"), LocaleUtils.toLocale("en_US"));
+        assertEquals(mapping.getMapping().get("french"), LocaleUtils.toLocale("fr"));
+        assertEquals(mapping.getMapping().get("francais"), LocaleUtils.toLocale("fr"));
     }
 
     @Test
     public void testCreateMappingFilterAndOverride() throws Exception {
         MappingConfig config = new MappingConfig();
         config.name = "test";
-        config.extend = Collections.singletonList("ISO-639-ALPHA-3");
-        config.filter = asList("EN", "fr");
+        config.extend = ImmutableList.of("ISO-639-ALPHA-3");
+        config.filter = "en,fr";
         config.override = ImmutableMap.of("fr", "french,francais");
         MappingsFactory f = new MappingsFactory(Collections.singletonList(config));
         assertTrue(f.getMappings().containsKey("test"));
 
         Mapping mapping = f.getMappings().get("test");
         assertEquals(mapping.getMapping().size(), 3);
-        assertEquals(mapping.getMapping().get("eng"), "en"); // Kept by filter
+        assertEquals(mapping.getMapping().get("eng"), LocaleUtils.toLocale("en")); // Kept by filter
         assertFalse(mapping.getMapping().containsKey("fra")); // Kept by filter but overriden
         assertFalse(mapping.getMapping().containsKey("ita")); // Removed by filter
-        assertEquals(mapping.getMapping().get("french"), "fr");
-        assertEquals(mapping.getMapping().get("francais"), "fr");
+        assertEquals(mapping.getMapping().get("french"), LocaleUtils.toLocale("fr"));
+        assertEquals(mapping.getMapping().get("francais"), LocaleUtils.toLocale("fr"));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testDuplicateMapping() throws Exception {
         MappingConfig config = new MappingConfig();
         config.name = "test";
-        MappingsFactory f = new MappingsFactory(ImmutableList.of(config, config));
+        new MappingsFactory(ImmutableList.of(config, config));
     }
 }

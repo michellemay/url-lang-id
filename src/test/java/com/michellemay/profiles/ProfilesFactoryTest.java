@@ -183,7 +183,7 @@ public class ProfilesFactoryTest {
       ProfileConfig.MatcherRef matcher = new ProfileConfig.MatcherRef();
       matcher.matcher = "withmapping";
       config.matchers = ImmutableList.of(matcher);
-      ProfilesFactory f = create(ImmutableList.of(config, config));
+      create(ImmutableList.of(config, config));
    }
 
    @Test
