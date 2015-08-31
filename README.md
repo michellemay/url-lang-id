@@ -16,6 +16,27 @@ Detect common language patterns in URLs.
 - Extract complete locale description if possible (language, country, variant).
 - Json or programmatic configuration with default profiles.
 
+## Maven
+
+```
+  <dependency>
+    <groupId>com.michellemay</groupId>
+    <artifactId>url-lang-id</artifactId>
+    <version>0.1.0</version>
+  </dependency>
+  
+  ...
+  
+  <repositories>
+    <repository>
+      <id>sonatype-release</id>
+      <name>Sonatype release builds</name>
+      <url>https://oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+  </repositories>  
+  
+```
+
 ## Usage
 
 Complete sample with built-in config defaults:
