@@ -22,11 +22,19 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
+ * Human readable display names mappings.
+ *
  * @author Michel Lemay
  */
 public class DisplayNamesMapping extends Mapping {
     private Locale displayLocale;
 
+    /**
+     * Instantiates a new Display names mapping.
+     *
+     * @param name the name
+     * @param displayLocale the display locale
+     */
     public DisplayNamesMapping(String name, Locale displayLocale) {
         super(name);
         this.displayLocale = displayLocale;

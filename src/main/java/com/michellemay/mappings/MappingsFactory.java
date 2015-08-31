@@ -16,20 +16,31 @@
 
 package com.michellemay.mappings;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
 /**
+ * Mappings factory.
+ *
  * @author Michel Lemay
  */
 public class MappingsFactory {
     private HashMap<String, Mapping> mappings;
 
+    /**
+     * Gets mappings.
+     *
+     * @return the mappings
+     */
     public Map<String, Mapping> getMappings() { return mappings; }
 
+    /**
+     * Instantiates a new Mappings factory.
+     *
+     * @param mappingsConfig the mappings config
+     */
     public MappingsFactory(List<MappingConfig> mappingsConfig) {
         mappings = new HashMap<String, Mapping>();
 
@@ -117,5 +128,4 @@ public class MappingsFactory {
 
         return new CustomMapping(mappingConfig.name.trim()).withCaseSensitive(mappingConfig.casesensitive).withMapping(curMap);
     }
-
 }

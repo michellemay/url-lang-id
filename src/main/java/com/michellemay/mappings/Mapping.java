@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * Base Mapping class.
+ *
  * @author Michel Lemay
  */
 public class Mapping {
@@ -28,18 +30,58 @@ public class Mapping {
     private Map<String, Locale> mapping;
     private boolean caseSensitive;
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() { return name; }
 
+    /**
+     * Gets mapping.
+     *
+     * @return the mapping
+     */
     public Map<String, Locale> getMapping() { return mapping; }
+
+    /**
+     * With mapping.
+     *
+     * @param mapping the mapping
+     * @return the mapping
+     */
     public Mapping withMapping(Map<String, Locale> mapping) { this.mapping = mapping; return this; }
 
+    /**
+     * Gets case sensitive.
+     *
+     * @return the case sensitive
+     */
     public boolean getCaseSensitive() { return caseSensitive; }
+
+    /**
+     * With case sensitive.
+     *
+     * @param caseSensitive the case sensitive
+     * @return the mapping
+     */
     public Mapping withCaseSensitive(boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
 
+    /**
+     * Instantiates a new Mapping.
+     *
+     * @param name the name
+     */
     protected Mapping(String name) {
         this.name = name;
     }
 
+    /**
+     * Detect locale for rawValue
+     *
+     * @param rawValue the raw value
+     * @return the optional
+     */
     public Optional<Locale> detect(String rawValue) {
         String value = caseSensitive ? rawValue : rawValue.toLowerCase();
         return Optional.ofNullable(mapping.get(value));

@@ -22,6 +22,8 @@ import com.michellemay.matchers.MatchersFactory;
 import com.michellemay.profiles.ProfilesFactory;
 
 /**
+ * URL language detector builder.
+ *
  * @author Michel Lemay
  */
 public class URLLanguageDetectorBuilder {
@@ -29,6 +31,12 @@ public class URLLanguageDetectorBuilder {
     private MatchersFactory matchersFactory;
     private ProfilesFactory profilesFactory;
 
+    /**
+     * Create uRL language detector builder.
+     *
+     * @param config the config
+     * @return the uRL language detector builder
+     */
     public static URLLanguageDetectorBuilder create(Config config) {
         return new URLLanguageDetectorBuilder(config);
     }
@@ -40,6 +48,11 @@ public class URLLanguageDetectorBuilder {
         this.profilesFactory = new ProfilesFactory(config.profiles, this.matchersFactory, this.mappingsFactory);
     }
 
+    /**
+     * Create uRL language detector.
+     *
+     * @return the uRL language detector
+     */
     public URLLanguageDetector create() {
         return new URLLanguageDetectorImpl(profilesFactory);
     }

@@ -22,10 +22,17 @@ import java.net.URL;
 import java.util.List;
 
 /**
+ * Hostname matcher.
+ * 
  * @author Michel Lemay
  */
 
 public class HostnameMatcher extends Matcher {
+    /**
+     * Instantiates a new Hostname matcher.
+     *
+     * @param name the name
+     */
     public HostnameMatcher(String name) {
         super(name, UrlPart.hostname);
     }

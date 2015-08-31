@@ -25,14 +25,27 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
+ * Matchers factory.
+ * 
  * @author Michel Lemay
  */
 public class MatchersFactory {
     private MappingsFactory mappingsFactory;
     private HashMap<String, Matcher> matchers;
 
+    /**
+     * Gets matchers.
+     *
+     * @return the matchers
+     */
     public Map<String, Matcher> getMatchers() { return matchers; }
 
+    /**
+     * Instantiates a new Matchers factory.
+     *
+     * @param matchersConfig the matchers config
+     * @param mappingsFactory the mappings factory
+     */
     public MatchersFactory(List<MatcherConfig> matchersConfig, MappingsFactory mappingsFactory) {
         this.mappingsFactory = mappingsFactory;
         this.matchers = new HashMap<String, Matcher>();

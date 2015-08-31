@@ -20,14 +20,24 @@ import com.michellemay.mappings.MappingConfig;
 import com.michellemay.matchers.MatcherConfig;
 import com.michellemay.profiles.ProfileConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Top level Config object.
+ *
  * @author Michel Lemay
  */
 public class Config {
+    /**
+     * The Mappings.
+     */
     public List<MappingConfig> mappings;
+    /**
+     * The Matchers.
+     */
     public List<MatcherConfig> matchers;
+    /**
+     * The Profiles.
+     */
     public List<ProfileConfig> profiles;
 }

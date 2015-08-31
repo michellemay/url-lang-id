@@ -16,8 +16,6 @@
 
 package com.michellemay;
 
-import com.michellemay.mappings.MappingsFactory;
-import com.michellemay.matchers.MatchersFactory;
 import com.michellemay.profiles.Profile;
 import com.michellemay.profiles.ProfilesFactory;
 
@@ -27,11 +25,18 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
+ * URL language detector impl.
+ * 
  * @author Michel Lemay
  */
 public class URLLanguageDetectorImpl implements URLLanguageDetector {
     private ProfilesFactory profilesFactory;
 
+    /**
+     * Instantiates a new URL language detector impl.
+     *
+     * @param profilesFactory the profiles factory
+     */
     URLLanguageDetectorImpl(ProfilesFactory profilesFactory) {
         this.profilesFactory = profilesFactory;
     }

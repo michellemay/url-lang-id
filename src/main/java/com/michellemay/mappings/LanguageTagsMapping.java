@@ -22,11 +22,16 @@ import java.util.Locale;
 import java.util.TreeMap;
 
 /**
+ * Locale LanguageTags mapping.
+ *
  * @author Michel Lemay
  */
 public class LanguageTagsMapping extends Mapping {
     static public String NAME = "LANGUAGE_TAGS";
 
+    /**
+     * Instantiates a new Language tags mapping.
+     */
     public LanguageTagsMapping() {
         super(NAME);
         this.withCaseSensitive(false);

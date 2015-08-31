@@ -22,11 +22,16 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
+ * ISO 639 alpha 3 mapping.
+ *
  * @author Michel Lemay
  */
 public class ISO639Alpha3Mapping extends Mapping {
     static public String NAME = "ISO-639-ALPHA-3";
 
+    /**
+     * Instantiates a new ISO 639 alpha 3 mapping.
+     */
     public ISO639Alpha3Mapping() {
         super(NAME);
 

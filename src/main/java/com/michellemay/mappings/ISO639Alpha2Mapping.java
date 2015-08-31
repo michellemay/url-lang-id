@@ -23,11 +23,16 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
+ * ISO 639 alpha 2 mapping.
+ *
  * @author Michel Lemay
  */
 public class ISO639Alpha2Mapping extends Mapping {
     static public String NAME = "ISO-639-ALPHA-2";
 
+    /**
+     * Instantiates a new ISO 639 alpha 2 mapping.
+     */
     public ISO639Alpha2Mapping() {
         super(NAME);
 

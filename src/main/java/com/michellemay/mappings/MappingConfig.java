@@ -20,13 +20,33 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Mapping config.
+ *
  * @author Michel Lemay
  */
 public class MappingConfig {
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Extend.
+     */
     public List<String> extend;
+    /**
+     * The Add.
+     */
     public Map<String, String> add;
+    /**
+     * The Override.
+     */
     public Map<String, String> override;
+    /**
+     * The Filter.
+     */
     public String filter;
+    /**
+     * The Casesensitive.
+     */
     public boolean casesensitive = false;
 }

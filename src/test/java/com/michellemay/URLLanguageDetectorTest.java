@@ -16,31 +16,26 @@
 
 package com.michellemay;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.michellemay.config.ConfigReader;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Unit test for simple App.
  */
 public class URLLanguageDetectorTest {
-    private List<Pair<String,String>> testCasesDefault = Lists.newArrayList(
+    private List<Pair<String,String>> testCasesDefault = Arrays.asList(
             // Should detect english (Case insensitive by default)
             Pair.of("http://en.test.com/", "en"),
             Pair.of("http://ENG.test.com/", "en"),
@@ -67,7 +62,7 @@ public class URLLanguageDetectorTest {
             Pair.of("http://www.test.com/path/en/index.html", "")
     );
 
-    private List<Pair<String,String>> testCasesTest = Lists.newArrayList(
+    private List<Pair<String,String>> testCasesTest = Arrays.asList(
             // docs/ path is case insensitive (but language name is)
             Pair.of("http://mystuff.stuff/docs/ANGLAIS/index.html", "en"),
             Pair.of("http://mystuff.stuff/docs/ANGLAIS/INDEX.html", "en"),

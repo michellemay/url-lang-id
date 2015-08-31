@@ -19,11 +19,16 @@ package com.michellemay.mappings;
 import org.apache.commons.lang3.LocaleUtils;
 
 /**
+ * English names mapping.
+ *
  * @author Michel Lemay
  */
 public class EnglishNamesMapping extends DisplayNamesMapping {
     static public String NAME = "ENGLISH_NAMES";
 
+    /**
+     * Instantiates a new English names mapping.
+     */
     public EnglishNamesMapping() {
         super(NAME, LocaleUtils.toLocale("en_US"));
     }

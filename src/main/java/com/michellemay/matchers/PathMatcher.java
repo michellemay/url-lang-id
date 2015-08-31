@@ -22,9 +22,16 @@ import java.net.URL;
 import java.util.List;
 
 /**
+ * Path matcher.
+ * 
  * @author Michel Lemay
  */
 public class PathMatcher extends Matcher {
+    /**
+     * Instantiates a new Path matcher.
+     *
+     * @param name the name
+     */
     public PathMatcher(String name) {
         super(name, UrlPart.hostname);
     }

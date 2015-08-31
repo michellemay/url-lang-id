@@ -16,7 +16,6 @@
 
 package com.michellemay;
 
-import java.net.MalformedURLException;
 import java.util.Locale;
 import java.util.Optional;
 

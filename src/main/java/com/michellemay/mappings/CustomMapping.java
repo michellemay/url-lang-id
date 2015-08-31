@@ -17,9 +17,16 @@
 package com.michellemay.mappings;
 
 /**
+ * Custom mapping.
+ *
  * @author Michel Lemay
  */
 public class CustomMapping extends Mapping {
+    /**
+     * Instantiates a new Custom mapping.
+     *
+     * @param name the name
+     */
     public CustomMapping(String name) {
         super(name);
     }

@@ -17,15 +17,20 @@
 package com.michellemay.matchers;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import java.net.URL;
 import java.util.List;
 
 /**
+ * The type Querystring matcher.
  * @author Michel Lemay
  */
 public class QuerystringMatcher extends Matcher {
+    /**
+     * Instantiates a new Querystring matcher.
+     *
+     * @param name the name
+     */
     public QuerystringMatcher(String name) {
         super(name, UrlPart.hostname);
     }

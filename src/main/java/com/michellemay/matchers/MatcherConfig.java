@@ -19,12 +19,29 @@ package com.michellemay.matchers;
 import java.util.List;
 
 /**
+ * Matcher config.
+ * 
  * @author Michel Lemay
  */
 public class MatcherConfig {
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Urlpart.
+     */
     public Matcher.UrlPart urlpart;
+    /**
+     * The Patterns.
+     */
     public List<String> patterns;
+    /**
+     * The Mapping.
+     */
     public String mapping;
+    /**
+     * The Casesensitive.
+     */
     public boolean casesensitive = false;
 }

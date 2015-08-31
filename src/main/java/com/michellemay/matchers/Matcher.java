@@ -25,11 +25,29 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
+ * Base class for all matchers.
  * @author Michel Lemay
  */
 public abstract class Matcher {
     private static String LANG_GROUP_NAME = "lang";
-    public enum UrlPart { hostname, path, querystring };
+
+    /**
+     * The enum Url part.
+     */
+    public enum UrlPart {
+        /**
+         * Hostname Matcher.
+         */
+        hostname,
+        /**
+         * Path Matcher.
+         */
+        path,
+        /**
+         * Querystring Matcher.
+         */
+        querystring
+    };
 
     private String name;
     private Matcher.UrlPart urlPart;
@@ -37,24 +55,82 @@ public abstract class Matcher {
     private Optional<Mapping> mapping;
     private boolean caseSensitive;
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() { return name; }
 
+    /**
+     * Gets url part.
+     *
+     * @return the url part
+     */
     public UrlPart getUrlPart() { return urlPart; }
 
+    /**
+     * Gets patterns.
+     *
+     * @return the patterns
+     */
     public List<Pattern> getPatterns() { return patterns; }
+
+    /**
+     * With patterns.
+     *
+     * @param patterns the patterns
+     * @return the matcher
+     */
     public Matcher withPatterns(List<Pattern> patterns) { this.patterns = patterns; return this; }
 
+    /**
+     * Gets mapping.
+     *
+     * @return the mapping
+     */
     public Optional<Mapping> getMapping() { return mapping; }
+
+    /**
+     * With mapping.
+     *
+     * @param mapping the mapping
+     * @return the matcher
+     */
     public Matcher withMapping(Optional<Mapping> mapping) { this.mapping = mapping; return this; }
 
+    /**
+     * Gets case sensitive.
+     *
+     * @return the case sensitive
+     */
     public boolean getCaseSensitive() { return caseSensitive; }
+
+    /**
+     * With case sensitive.
+     *
+     * @param caseSensitive the case sensitive
+     * @return the matcher
+     */
     public Matcher withCaseSensitive(boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
 
+    /**
+     * Instantiates a new Matcher.
+     *
+     * @param name the name
+     * @param urlpart the urlpart
+     */
     protected Matcher(String name, UrlPart urlpart) {
         this.name = name;
         this.urlPart = urlpart;
     }
 
+    /**
+     * Analyze URL and detect language..
+     *
+     * @param url the url
+     * @return the optional
+     */
     public Optional<Locale> detect(URL url) {
         Optional<Locale> lang = Optional.empty();
 
@@ -75,14 +151,32 @@ public abstract class Matcher {
         return lang;
     }
 
+    /**
+     * Gets parts.
+     *
+     * @param url the url
+     * @return the parts
+     */
     protected abstract List<String> getParts(URL url);
 
-    // So I've heard Cloneable is broken..
+    /**
+     * Shallow copy with mapping.
+     *
+     * @param newMapping the new mapping
+     * @return the matcher
+     */
+// So I've heard Cloneable is broken..
     public Matcher shallowCopyWithMapping(Optional<Mapping> newMapping) {
         return this.cloneInstance()
                 .withPatterns(this.patterns)
                 .withCaseSensitive(this.caseSensitive)
                 .withMapping(newMapping);
     }
+
+    /**
+     * Clone instance.
+     *
+     * @return the matcher
+     */
     protected abstract Matcher cloneInstance();
 }
