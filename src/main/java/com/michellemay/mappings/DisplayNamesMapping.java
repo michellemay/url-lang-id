@@ -41,13 +41,14 @@ public class DisplayNamesMapping extends Mapping {
 
         // Build reverse map
         HashMap<String, Locale> map = new HashMap<String, Locale>();
-        for (Locale loc : LocaleUtils.availableLocaleList()) {
+        for (String isoCode : Locale.getISOLanguages()) {
+            Locale loc = LocaleUtils.toLocale(isoCode);
             String displayName = loc.getDisplayName(displayLocale).toLowerCase();
-            String isoCode = loc.getLanguage().toLowerCase();
             if (isoCode.length() > 0 && !map.containsKey(displayName)) {
-                map.put(displayName, LocaleUtils.toLocale(isoCode));
+                map.put(displayName, loc);
             }
         }
+
         this.withMapping(map).withCaseSensitive(false);
     }
 }
