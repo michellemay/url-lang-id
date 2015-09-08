@@ -86,7 +86,7 @@ Matchers attributes:
 - "patterns": Regex patterns to apply on hostname, path or query parameters. Must include a capturing group named 'lang' (ex: (?<lang>\w+))
 - "casesensitive": Pattern matching case sensitiveness (default = false)
 - "mapping": Sets default language mappings for this matcher.
-= "patternorder": Match pattern in the same order as listed.  Otherwise, match using url parts order. (default = true)
+- "patternorder": Match pattern in the same order as listed.  Otherwise, match using url parts order. (default = true)
 
 Default matchers:
 
