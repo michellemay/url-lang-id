@@ -4,7 +4,7 @@
 
   <groupId>com.michellemay</groupId>
   <artifactId>url-lang-id</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.1.1</version>
   <packaging>jar</packaging>
 
   <name>url-lang-id</name>
