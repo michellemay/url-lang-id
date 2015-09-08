@@ -44,4 +44,9 @@ public class MatcherConfig {
      * The Casesensitive.
      */
     public boolean casesensitive = false;
+    /**
+     * Pattern order
+     */
+    public boolean patternorder = true;
+
 }

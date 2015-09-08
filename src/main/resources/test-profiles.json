@@ -33,12 +33,14 @@
       "name":"myquerystring1",
       "urlpart":"querystring",
       "patterns":["(cv_)?lang(uage)?=(?<lang>.*)","loc=(?<lang>.*)"],
-      "casesensitive":"true"
+      "casesensitive":"true",
+      "patternorder":"true"
     },
     {
       "name":"myquerystring2",
       "urlpart":"querystring",
-      "patterns":["lr=(?<lang>.*)"]
+      "patterns":["lr=(?<lang>.*)","lr2=(?<lang>.*)"],
+      "patternorder":"false"
     }
   ],
 

@@ -54,6 +54,7 @@ public abstract class Matcher {
     private List<Pattern> patterns;
     private Optional<Mapping> mapping;
     private boolean caseSensitive;
+    private boolean patternOrder;
 
     /**
      * Gets name.
@@ -115,6 +116,21 @@ public abstract class Matcher {
     public Matcher withCaseSensitive(boolean caseSensitive) { this.caseSensitive = caseSensitive; return this; }
 
     /**
+     * Gets pattern order.
+     *
+     * @return the pattern order
+     */
+    public boolean getPatternOrder() { return patternOrder; }
+
+    /**
+     * With pattern order.
+     *
+     * @param patternOrder the pattern order
+     * @return the matcher
+     */
+    public Matcher withPatternOrder(boolean patternOrder) { this.patternOrder = patternOrder; return this; }
+
+    /**
      * Instantiates a new Matcher.
      *
      * @param name the name
@@ -136,13 +152,27 @@ public abstract class Matcher {
 
         search: {
             List<String> parts = getParts(url);
-            for (String part : parts) {
+            if (patternOrder) {
                 for (Pattern p : getPatterns()) {
-                    java.util.regex.Matcher regexMatcher = p.matcher(part);
-                    if (regexMatcher.matches()) {
-                        lang = mapping.get().detect(regexMatcher.group(LANG_GROUP_NAME));
-                        if (lang.isPresent()) {
-                            break search;
+                    for (String part : parts) {
+                        java.util.regex.Matcher regexMatcher = p.matcher(part);
+                        if (regexMatcher.matches()) {
+                            lang = mapping.get().detect(regexMatcher.group(LANG_GROUP_NAME));
+                            if (lang.isPresent()) {
+                                break search;
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (String part : parts) {
+                    for (Pattern p : getPatterns()) {
+                        java.util.regex.Matcher regexMatcher = p.matcher(part);
+                        if (regexMatcher.matches()) {
+                            lang = mapping.get().detect(regexMatcher.group(LANG_GROUP_NAME));
+                            if (lang.isPresent()) {
+                                break search;
+                            }
                         }
                     }
                 }
@@ -161,15 +191,16 @@ public abstract class Matcher {
 
     /**
      * Shallow copy with mapping.
+     * NOTE: So I've heard Cloneable is broken..
      *
      * @param newMapping the new mapping
      * @return the matcher
      */
-// So I've heard Cloneable is broken..
     public Matcher shallowCopyWithMapping(Optional<Mapping> newMapping) {
         return this.cloneInstance()
                 .withPatterns(this.patterns)
                 .withCaseSensitive(this.caseSensitive)
+                .withPatternOrder(this.patternOrder)
                 .withMapping(newMapping);
     }
 

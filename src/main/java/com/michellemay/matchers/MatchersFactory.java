@@ -98,7 +98,8 @@ public class MatchersFactory {
         return createMatcher(matcherConfig.name, matcherConfig.urlpart)
                 .withPatterns(patterns)
                 .withCaseSensitive(matcherConfig.casesensitive)
-                .withMapping(mapping);
+                .withMapping(mapping)
+                .withPatternOrder(matcherConfig.patternorder);
     }
 
     private Matcher createMatcher(String name, Matcher.UrlPart urlpart) {

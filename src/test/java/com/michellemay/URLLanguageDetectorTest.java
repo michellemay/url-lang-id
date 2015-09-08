@@ -81,6 +81,14 @@ public class URLLanguageDetectorTest {
             Pair.of("http://mystuff.stuff?lr=ita", "it"),
             Pair.of("http://mystuff.stuff?LR=français", "fr"),
 
+            // Respect configured pattern order
+            Pair.of("http://mystuff.stuff?language=it&loc=fr", "it"),
+            Pair.of("http://mystuff.stuff?loc=fr&language=it", "it"),
+
+            // Respect querystring parameter order
+            Pair.of("http://mystuff.stuff?lr=it&lr2=es", "it"),
+            Pair.of("http://mystuff.stuff?lr2=es&lr=it", "es"),
+
             // Match on second profile
             Pair.of("http://other.com?lr=it", "it"),
             Pair.of("http://OTHER.COM?LR=es", "es")
