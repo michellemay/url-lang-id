@@ -25,16 +25,6 @@ Detect common language patterns in URLs.
     <version>0.1.0</version>
   </dependency>
   
-  ...
-  
-  <repositories>
-    <repository>
-      <id>sonatype-release</id>
-      <name>Sonatype release builds</name>
-      <url>https://oss.sonatype.org/content/repositories/releases/</url>
-    </repository>
-  </repositories>  
-  
 ```
 
 ## Usage
